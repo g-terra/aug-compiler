@@ -1,2 +1,5 @@
 a:="hello";
 print(substring(a,length(a),1));
+
+print("hello");
+print(1+3);

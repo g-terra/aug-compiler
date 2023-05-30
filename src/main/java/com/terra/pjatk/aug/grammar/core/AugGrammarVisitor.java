@@ -47,6 +47,12 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintable_expr(AugGrammarParser.Printable_exprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#printable_undef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintable_undef(AugGrammarParser.Printable_undefContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#printable_num_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -58,12 +64,6 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AugGrammarParser#printable_undef}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrintable_undef(AugGrammarParser.Printable_undefContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#num_expr}.
 	 * @param ctx the parse tree

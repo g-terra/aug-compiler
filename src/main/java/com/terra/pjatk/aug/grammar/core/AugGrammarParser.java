@@ -1,13 +1,16 @@
 // Generated from com/terra/pjatk/aug/grammar/core/AugGrammar.g4 by ANTLR 4.13.0
 package com.terra.pjatk.aug.grammar.core;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
+
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class AugGrammarParser extends Parser {
@@ -22,8 +25,8 @@ public class AugGrammarParser extends Parser {
 		NUM=18, IDENT=19, STRING=20, WS=21;
 	public static final int
 		RULE_program = 0, RULE_instr = 1, RULE_simple_instr = 2, RULE_assign_stat = 3, 
-		RULE_output_stat = 4, RULE_printable_expr = 5, RULE_printable_num_expr = 6, 
-		RULE_printable_str_expr = 7, RULE_printable_undef = 8, RULE_num_expr = 9, 
+		RULE_output_stat = 4, RULE_printable_expr = 5, RULE_printable_undef = 6, 
+		RULE_printable_num_expr = 7, RULE_printable_str_expr = 8, RULE_num_expr = 9, 
 		RULE_t_num_expr = 10, RULE_f_num_expr = 11, RULE_negate = 12, RULE_paren = 13, 
 		RULE_read_int = 14, RULE_length = 15, RULE_position = 16, RULE_str_expr = 17, 
 		RULE_read_str = 18, RULE_concatenate = 19, RULE_substring = 20, RULE_ident = 21, 
@@ -31,7 +34,7 @@ public class AugGrammarParser extends Parser {
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "instr", "simple_instr", "assign_stat", "output_stat", "printable_expr", 
-			"printable_num_expr", "printable_str_expr", "printable_undef", "num_expr", 
+			"printable_undef", "printable_num_expr", "printable_str_expr", "num_expr", 
 			"t_num_expr", "f_num_expr", "negate", "paren", "read_int", "length", 
 			"position", "str_expr", "read_str", "concatenate", "substring", "ident", 
 			"num", "string"
@@ -468,6 +471,43 @@ public class AugGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
+	public static class Printable_undefContext extends ParserRuleContext {
+		public TerminalNode IDENT() { return getToken(AugGrammarParser.IDENT, 0); }
+		public Printable_undefContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_printable_undef; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AugGrammarVisitor ) return ((AugGrammarVisitor<? extends T>)visitor).visitPrintable_undef(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Printable_undefContext printable_undef() throws RecognitionException {
+		Printable_undefContext _localctx = new Printable_undefContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_printable_undef);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(88);
+			if (!( isUndefined(_input.LT(1).getText()) )) throw new FailedPredicateException(this, " isUndefined(_input.LT(1).getText()) ");
+			setState(89);
+			match(IDENT);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
 	public static class Printable_num_exprContext extends ParserRuleContext {
 		public Num_exprContext num_expr() {
 			return getRuleContext(Num_exprContext.class,0);
@@ -485,13 +525,13 @@ public class AugGrammarParser extends Parser {
 
 	public final Printable_num_exprContext printable_num_expr() throws RecognitionException {
 		Printable_num_exprContext _localctx = new Printable_num_exprContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_printable_num_expr);
+		enterRule(_localctx, 14, RULE_printable_num_expr);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(88);
+			setState(91);
 			if (!( isNum(_input.LT(1).getText()) )) throw new FailedPredicateException(this, " isNum(_input.LT(1).getText()) ");
-			setState(89);
+			setState(92);
 			num_expr();
 			}
 		}
@@ -524,51 +564,14 @@ public class AugGrammarParser extends Parser {
 
 	public final Printable_str_exprContext printable_str_expr() throws RecognitionException {
 		Printable_str_exprContext _localctx = new Printable_str_exprContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_printable_str_expr);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(91);
-			if (!( isStr(_input.LT(1).getText()) )) throw new FailedPredicateException(this, " isStr(_input.LT(1).getText()) ");
-			setState(92);
-			str_expr();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Printable_undefContext extends ParserRuleContext {
-		public TerminalNode IDENT() { return getToken(AugGrammarParser.IDENT, 0); }
-		public Printable_undefContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_printable_undef; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof AugGrammarVisitor ) return ((AugGrammarVisitor<? extends T>)visitor).visitPrintable_undef(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final Printable_undefContext printable_undef() throws RecognitionException {
-		Printable_undefContext _localctx = new Printable_undefContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_printable_undef);
+		enterRule(_localctx, 16, RULE_printable_str_expr);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(94);
-			if (!( isUndefined(_input.LT(1).getText()) )) throw new FailedPredicateException(this, " isUndefined(_input.LT(1).getText()) ");
+			if (!( isStr(_input.LT(1).getText()) )) throw new FailedPredicateException(this, " isStr(_input.LT(1).getText()) ");
 			setState(95);
-			match(IDENT);
+			str_expr();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1386,32 +1389,32 @@ public class AugGrammarParser extends Parser {
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
 		case 6:
-			return printable_num_expr_sempred((Printable_num_exprContext)_localctx, predIndex);
-		case 7:
-			return printable_str_expr_sempred((Printable_str_exprContext)_localctx, predIndex);
-		case 8:
 			return printable_undef_sempred((Printable_undefContext)_localctx, predIndex);
+		case 7:
+			return printable_num_expr_sempred((Printable_num_exprContext)_localctx, predIndex);
+		case 8:
+			return printable_str_expr_sempred((Printable_str_exprContext)_localctx, predIndex);
+		}
+		return true;
+	}
+	private boolean printable_undef_sempred(Printable_undefContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 0:
+			return  isUndefined(_input.LT(1).getText()) ;
 		}
 		return true;
 	}
 	private boolean printable_num_expr_sempred(Printable_num_exprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0:
+		case 1:
 			return  isNum(_input.LT(1).getText()) ;
 		}
 		return true;
 	}
 	private boolean printable_str_expr_sempred(Printable_str_exprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 1:
-			return  isStr(_input.LT(1).getText()) ;
-		}
-		return true;
-	}
-	private boolean printable_undef_sempred(Printable_undefContext _localctx, int predIndex) {
-		switch (predIndex) {
 		case 2:
-			return  isUndefined(_input.LT(1).getText()) ;
+			return  isStr(_input.LT(1).getText()) ;
 		}
 		return true;
 	}
@@ -1471,54 +1474,54 @@ public class AugGrammarParser extends Parser {
 		"\u0000L=\u0001\u0000\u0000\u0000LB\u0001\u0000\u0000\u0000LG\u0001\u0000"+
 		"\u0000\u0000M\u0007\u0001\u0000\u0000\u0000NO\u0005\u0003\u0000\u0000"+
 		"OP\u0005\u0004\u0000\u0000PQ\u0003\n\u0005\u0000QR\u0005\u0005\u0000\u0000"+
-		"R\t\u0001\u0000\u0000\u0000SW\u0003\u0010\b\u0000TW\u0003\f\u0006\u0000"+
-		"UW\u0003\u000e\u0007\u0000VS\u0001\u0000\u0000\u0000VT\u0001\u0000\u0000"+
+		"R\t\u0001\u0000\u0000\u0000SW\u0003\f\u0006\u0000TW\u0003\u000e\u0007"+
+		"\u0000UW\u0003\u0010\b\u0000VS\u0001\u0000\u0000\u0000VT\u0001\u0000\u0000"+
 		"\u0000VU\u0001\u0000\u0000\u0000W\u000b\u0001\u0000\u0000\u0000XY\u0004"+
-		"\u0006\u0000\u0000YZ\u0003\u0012\t\u0000Z\r\u0001\u0000\u0000\u0000[\\"+
-		"\u0004\u0007\u0001\u0000\\]\u0003\"\u0011\u0000]\u000f\u0001\u0000\u0000"+
-		"\u0000^_\u0004\b\u0002\u0000_`\u0005\u0013\u0000\u0000`\u0011\u0001\u0000"+
-		"\u0000\u0000ah\u0003\u0014\n\u0000bc\u0005\u0006\u0000\u0000cg\u0003\u0014"+
-		"\n\u0000de\u0005\u0007\u0000\u0000eg\u0003\u0014\n\u0000fb\u0001\u0000"+
-		"\u0000\u0000fd\u0001\u0000\u0000\u0000gj\u0001\u0000\u0000\u0000hf\u0001"+
-		"\u0000\u0000\u0000hi\u0001\u0000\u0000\u0000i\u0013\u0001\u0000\u0000"+
-		"\u0000jh\u0001\u0000\u0000\u0000kt\u0003\u0016\u000b\u0000lm\u0005\b\u0000"+
-		"\u0000ms\u0003\u0016\u000b\u0000no\u0005\t\u0000\u0000os\u0003\u0016\u000b"+
-		"\u0000pq\u0005\n\u0000\u0000qs\u0003\u0016\u000b\u0000rl\u0001\u0000\u0000"+
-		"\u0000rn\u0001\u0000\u0000\u0000rp\u0001\u0000\u0000\u0000sv\u0001\u0000"+
-		"\u0000\u0000tr\u0001\u0000\u0000\u0000tu\u0001\u0000\u0000\u0000u\u0015"+
-		"\u0001\u0000\u0000\u0000vt\u0001\u0000\u0000\u0000w\u007f\u0003,\u0016"+
-		"\u0000x\u007f\u0003*\u0015\u0000y\u007f\u0003\u001c\u000e\u0000z\u007f"+
-		"\u0003\u0018\f\u0000{\u007f\u0003\u001a\r\u0000|\u007f\u0003\u001e\u000f"+
-		"\u0000}\u007f\u0003 \u0010\u0000~w\u0001\u0000\u0000\u0000~x\u0001\u0000"+
-		"\u0000\u0000~y\u0001\u0000\u0000\u0000~z\u0001\u0000\u0000\u0000~{\u0001"+
-		"\u0000\u0000\u0000~|\u0001\u0000\u0000\u0000~}\u0001\u0000\u0000\u0000"+
-		"\u007f\u0017\u0001\u0000\u0000\u0000\u0080\u0081\u0005\u0007\u0000\u0000"+
-		"\u0081\u0082\u0003\u0012\t\u0000\u0082\u0019\u0001\u0000\u0000\u0000\u0083"+
-		"\u0084\u0005\u0004\u0000\u0000\u0084\u0085\u0003\u0012\t\u0000\u0085\u0086"+
-		"\u0005\u0005\u0000\u0000\u0086\u001b\u0001\u0000\u0000\u0000\u0087\u0088"+
-		"\u0005\u000b\u0000\u0000\u0088\u001d\u0001\u0000\u0000\u0000\u0089\u008a"+
-		"\u0005\f\u0000\u0000\u008a\u008b\u0005\u0004\u0000\u0000\u008b\u008c\u0003"+
-		"\"\u0011\u0000\u008c\u008d\u0005\u0005\u0000\u0000\u008d\u001f\u0001\u0000"+
-		"\u0000\u0000\u008e\u008f\u0005\r\u0000\u0000\u008f\u0090\u0005\u0004\u0000"+
-		"\u0000\u0090\u0091\u0003\"\u0011\u0000\u0091\u0092\u0005\u000e\u0000\u0000"+
-		"\u0092\u0093\u0003\"\u0011\u0000\u0093\u0094\u0005\u0005\u0000\u0000\u0094"+
-		"!\u0001\u0000\u0000\u0000\u0095\u009b\u0003.\u0017\u0000\u0096\u009b\u0003"+
-		"*\u0015\u0000\u0097\u009b\u0003$\u0012\u0000\u0098\u009b\u0003&\u0013"+
-		"\u0000\u0099\u009b\u0003(\u0014\u0000\u009a\u0095\u0001\u0000\u0000\u0000"+
-		"\u009a\u0096\u0001\u0000\u0000\u0000\u009a\u0097\u0001\u0000\u0000\u0000"+
-		"\u009a\u0098\u0001\u0000\u0000\u0000\u009a\u0099\u0001\u0000\u0000\u0000"+
-		"\u009b#\u0001\u0000\u0000\u0000\u009c\u009d\u0005\u000f\u0000\u0000\u009d"+
-		"%\u0001\u0000\u0000\u0000\u009e\u009f\u0005\u0010\u0000\u0000\u009f\u00a0"+
-		"\u0005\u0004\u0000\u0000\u00a0\u00a1\u0003\"\u0011\u0000\u00a1\u00a2\u0005"+
-		"\u000e\u0000\u0000\u00a2\u00a3\u0003\"\u0011\u0000\u00a3\u00a4\u0005\u0005"+
-		"\u0000\u0000\u00a4\'\u0001\u0000\u0000\u0000\u00a5\u00a6\u0005\u0011\u0000"+
-		"\u0000\u00a6\u00a7\u0005\u0004\u0000\u0000\u00a7\u00a8\u0003\"\u0011\u0000"+
-		"\u00a8\u00a9\u0005\u000e\u0000\u0000\u00a9\u00aa\u0003\u0012\t\u0000\u00aa"+
-		"\u00ab\u0005\u000e\u0000\u0000\u00ab\u00ac\u0003\u0012\t\u0000\u00ac\u00ad"+
-		"\u0005\u0005\u0000\u0000\u00ad)\u0001\u0000\u0000\u0000\u00ae\u00af\u0005"+
-		"\u0013\u0000\u0000\u00af+\u0001\u0000\u0000\u0000\u00b0\u00b1\u0005\u0012"+
-		"\u0000\u0000\u00b1-\u0001\u0000\u0000\u0000\u00b2\u00b3\u0005\u0014\u0000"+
-		"\u0000\u00b3/\u0001\u0000\u0000\u0000\n7;LVfhrt~\u009a";
+		"\u0006\u0000\u0000YZ\u0005\u0013\u0000\u0000Z\r\u0001\u0000\u0000\u0000"+
+		"[\\\u0004\u0007\u0001\u0000\\]\u0003\u0012\t\u0000]\u000f\u0001\u0000"+
+		"\u0000\u0000^_\u0004\b\u0002\u0000_`\u0003\"\u0011\u0000`\u0011\u0001"+
+		"\u0000\u0000\u0000ah\u0003\u0014\n\u0000bc\u0005\u0006\u0000\u0000cg\u0003"+
+		"\u0014\n\u0000de\u0005\u0007\u0000\u0000eg\u0003\u0014\n\u0000fb\u0001"+
+		"\u0000\u0000\u0000fd\u0001\u0000\u0000\u0000gj\u0001\u0000\u0000\u0000"+
+		"hf\u0001\u0000\u0000\u0000hi\u0001\u0000\u0000\u0000i\u0013\u0001\u0000"+
+		"\u0000\u0000jh\u0001\u0000\u0000\u0000kt\u0003\u0016\u000b\u0000lm\u0005"+
+		"\b\u0000\u0000ms\u0003\u0016\u000b\u0000no\u0005\t\u0000\u0000os\u0003"+
+		"\u0016\u000b\u0000pq\u0005\n\u0000\u0000qs\u0003\u0016\u000b\u0000rl\u0001"+
+		"\u0000\u0000\u0000rn\u0001\u0000\u0000\u0000rp\u0001\u0000\u0000\u0000"+
+		"sv\u0001\u0000\u0000\u0000tr\u0001\u0000\u0000\u0000tu\u0001\u0000\u0000"+
+		"\u0000u\u0015\u0001\u0000\u0000\u0000vt\u0001\u0000\u0000\u0000w\u007f"+
+		"\u0003,\u0016\u0000x\u007f\u0003*\u0015\u0000y\u007f\u0003\u001c\u000e"+
+		"\u0000z\u007f\u0003\u0018\f\u0000{\u007f\u0003\u001a\r\u0000|\u007f\u0003"+
+		"\u001e\u000f\u0000}\u007f\u0003 \u0010\u0000~w\u0001\u0000\u0000\u0000"+
+		"~x\u0001\u0000\u0000\u0000~y\u0001\u0000\u0000\u0000~z\u0001\u0000\u0000"+
+		"\u0000~{\u0001\u0000\u0000\u0000~|\u0001\u0000\u0000\u0000~}\u0001\u0000"+
+		"\u0000\u0000\u007f\u0017\u0001\u0000\u0000\u0000\u0080\u0081\u0005\u0007"+
+		"\u0000\u0000\u0081\u0082\u0003\u0012\t\u0000\u0082\u0019\u0001\u0000\u0000"+
+		"\u0000\u0083\u0084\u0005\u0004\u0000\u0000\u0084\u0085\u0003\u0012\t\u0000"+
+		"\u0085\u0086\u0005\u0005\u0000\u0000\u0086\u001b\u0001\u0000\u0000\u0000"+
+		"\u0087\u0088\u0005\u000b\u0000\u0000\u0088\u001d\u0001\u0000\u0000\u0000"+
+		"\u0089\u008a\u0005\f\u0000\u0000\u008a\u008b\u0005\u0004\u0000\u0000\u008b"+
+		"\u008c\u0003\"\u0011\u0000\u008c\u008d\u0005\u0005\u0000\u0000\u008d\u001f"+
+		"\u0001\u0000\u0000\u0000\u008e\u008f\u0005\r\u0000\u0000\u008f\u0090\u0005"+
+		"\u0004\u0000\u0000\u0090\u0091\u0003\"\u0011\u0000\u0091\u0092\u0005\u000e"+
+		"\u0000\u0000\u0092\u0093\u0003\"\u0011\u0000\u0093\u0094\u0005\u0005\u0000"+
+		"\u0000\u0094!\u0001\u0000\u0000\u0000\u0095\u009b\u0003.\u0017\u0000\u0096"+
+		"\u009b\u0003*\u0015\u0000\u0097\u009b\u0003$\u0012\u0000\u0098\u009b\u0003"+
+		"&\u0013\u0000\u0099\u009b\u0003(\u0014\u0000\u009a\u0095\u0001\u0000\u0000"+
+		"\u0000\u009a\u0096\u0001\u0000\u0000\u0000\u009a\u0097\u0001\u0000\u0000"+
+		"\u0000\u009a\u0098\u0001\u0000\u0000\u0000\u009a\u0099\u0001\u0000\u0000"+
+		"\u0000\u009b#\u0001\u0000\u0000\u0000\u009c\u009d\u0005\u000f\u0000\u0000"+
+		"\u009d%\u0001\u0000\u0000\u0000\u009e\u009f\u0005\u0010\u0000\u0000\u009f"+
+		"\u00a0\u0005\u0004\u0000\u0000\u00a0\u00a1\u0003\"\u0011\u0000\u00a1\u00a2"+
+		"\u0005\u000e\u0000\u0000\u00a2\u00a3\u0003\"\u0011\u0000\u00a3\u00a4\u0005"+
+		"\u0005\u0000\u0000\u00a4\'\u0001\u0000\u0000\u0000\u00a5\u00a6\u0005\u0011"+
+		"\u0000\u0000\u00a6\u00a7\u0005\u0004\u0000\u0000\u00a7\u00a8\u0003\"\u0011"+
+		"\u0000\u00a8\u00a9\u0005\u000e\u0000\u0000\u00a9\u00aa\u0003\u0012\t\u0000"+
+		"\u00aa\u00ab\u0005\u000e\u0000\u0000\u00ab\u00ac\u0003\u0012\t\u0000\u00ac"+
+		"\u00ad\u0005\u0005\u0000\u0000\u00ad)\u0001\u0000\u0000\u0000\u00ae\u00af"+
+		"\u0005\u0013\u0000\u0000\u00af+\u0001\u0000\u0000\u0000\u00b0\u00b1\u0005"+
+		"\u0012\u0000\u0000\u00b1-\u0001\u0000\u0000\u0000\u00b2\u00b3\u0005\u0014"+
+		"\u0000\u0000\u00b3/\u0001\u0000\u0000\u0000\n7;LVfhrt~\u009a";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

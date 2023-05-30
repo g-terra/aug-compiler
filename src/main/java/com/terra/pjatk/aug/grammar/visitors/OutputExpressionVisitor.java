@@ -1,21 +1,30 @@
 package com.terra.pjatk.aug.grammar.visitors;
 
-import com.terra.pjatk.aug.grammar.AugVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
+import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
+import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
+import lombok.Setter;
 
 import java.util.Objects;
 
 public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
-    private final AugVisitor parentVisitor;
 
-    public OutputExpressionVisitor(AugVisitor parentVisitor) {
-        this.parentVisitor = parentVisitor;
+    @Setter
+    private AugGrammarVisitor<String> stringExpressionVisitor;
+
+    @Setter
+    private AugGrammarVisitor<Integer> numberExpressionVisitor;
+
+    private final OutputPrinter outputPrinter;
+
+    public OutputExpressionVisitor(OutputPrinter outputPrinter) {
+        this.outputPrinter = outputPrinter;
     }
 
     @Override
     public Object visitOutput_stat(AugGrammarParser.Output_statContext ctx) {
-        parentVisitor.getOutputPrinter().print(String.valueOf(visitPrintable_expr(ctx.printable_expr())));
+        outputPrinter.print(String.valueOf(visitPrintable_expr(ctx.printable_expr())));
         return null;
     }
 
@@ -37,13 +46,13 @@ public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitPrintable_num_expr(AugGrammarParser.Printable_num_exprContext ctx) {
-        return parentVisitor.getNumberExpressionVisitor().visitPrintable_num_expr(ctx);
+    public Integer visitPrintable_num_expr(AugGrammarParser.Printable_num_exprContext ctx) {
+        return numberExpressionVisitor.visit(ctx.num_expr());
     }
 
     @Override
-    public Object visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
-        return parentVisitor.getStringExpressionVisitor().visitPrintable_str_expr(ctx);
+    public String visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
+        return stringExpressionVisitor.visit(ctx.str_expr());
     }
 
 

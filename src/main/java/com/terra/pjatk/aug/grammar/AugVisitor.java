@@ -48,6 +48,7 @@ public class AugVisitor extends AugGrammarBaseVisitor<Object> {
             MemoryManager memoryManager,
             Debugger debugger
     ) {
+
         this.outputPrinter = outputPrinter;
         this.memoryManager = memoryManager;
         this.debugger = debugger;
@@ -68,9 +69,9 @@ public class AugVisitor extends AugGrammarBaseVisitor<Object> {
         this.stringExpressionVisitor.setNumberExpressionVisitor(numberExpressionVisitor);
 
 
-        numberExpressionVisitor.setStringExpressionVisitor(stringExpressionVisitor);
-
-        this.outputExpressionVisitor = new OutputExpressionVisitor(this);
+        this.outputExpressionVisitor = new OutputExpressionVisitor(outputPrinter);
+        this.outputExpressionVisitor.setNumberExpressionVisitor(numberExpressionVisitor);
+        this.outputExpressionVisitor.setStringExpressionVisitor(stringExpressionVisitor);
     }
 
 
@@ -126,17 +127,17 @@ public class AugVisitor extends AugGrammarBaseVisitor<Object> {
 
     @Override
     public Object visitOutput_stat(Output_statContext ctx) {
-        return outputExpressionVisitor.visitOutput_stat(ctx);
+        return outputExpressionVisitor.visit(ctx);
     }
 
     @Override
     public Object visitNum_expr(AugGrammarParser.Num_exprContext ctx) {
-        return numberExpressionVisitor.visitNum_expr(ctx);
+        return numberExpressionVisitor.visit(ctx);
     }
 
     @Override
     public Object visitStr_expr(AugGrammarParser.Str_exprContext ctx) {
-        return stringExpressionVisitor.visitStr_expr(ctx);
+        return stringExpressionVisitor.visit(ctx);
     }
 
 

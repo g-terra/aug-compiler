@@ -216,7 +216,7 @@ class StringExpressionVisitorTest {
 
 
     private String visitStringExpression(String expression) {
-        return (String) stringExpressionVisitor.visit(ProgramParser.parse(expression).str_expr());
+        return stringExpressionVisitor.visit(ProgramParser.parse(expression).str_expr());
     }
 
 

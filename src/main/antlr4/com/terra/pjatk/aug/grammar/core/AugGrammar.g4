@@ -44,9 +44,9 @@ assign_stat
 
 output_stat : 'print' '(' printable_expr ')' ;
 printable_expr :   printable_undef | printable_num_expr | printable_str_expr ;
+printable_undef : { isUndefined(_input.LT(1).getText()) }? IDENT ;
 printable_num_expr : { isNum(_input.LT(1).getText()) }? num_expr ;
 printable_str_expr : { isStr(_input.LT(1).getText()) }? str_expr ;
-printable_undef : { isUndefined(_input.LT(1).getText()) }? IDENT ;
 
 num_expr : t_num_expr ( '+' t_num_expr | '-' t_num_expr)* ;
 t_num_expr : f_num_expr ( '*' f_num_expr | '/' f_num_expr | '%' f_num_expr)* ;

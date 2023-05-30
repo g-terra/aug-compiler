@@ -245,7 +245,7 @@ class NumberExpressionVisitorTest {
 
 
     private Integer visitNumExpr(String numberExpression) {
-        return (Integer) numberVisitor.visit(ProgramParser.parse(numberExpression).num_expr());
+        return numberVisitor.visit(ProgramParser.parse(numberExpression).num_expr());
     }
 
 }
