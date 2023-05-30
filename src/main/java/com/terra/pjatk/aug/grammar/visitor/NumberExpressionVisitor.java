@@ -1,12 +1,12 @@
-package com.terra.pjatk.aug.grammar.visitors;
+package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
-import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
+import com.terra.pjatk.aug.grammar.visitor.provider.VisitorProvider;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
-import lombok.Setter;
 
 import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
 
@@ -16,20 +16,17 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
     private final MemoryManager memoryManager;
 
     private final InputReader inputReader;
-
+    private final VisitorProvider visitorProvider;
     private final Debugger debugger;
 
-    @Setter
-    private AugGrammarVisitor<String> stringExpressionVisitor;
 
     public NumberExpressionVisitor(
-            MemoryManager memoryManager,
-            Debugger debugger,
-            InputReader inputReader
+            VisitorProvider visitorProvider
     ) {
-        this.memoryManager = memoryManager;
-        this.debugger = debugger;
-        this.inputReader = inputReader;
+        this.visitorProvider = visitorProvider;
+        this.memoryManager = visitorProvider.getMemoryManager();
+        this.debugger = visitorProvider.getDebugger();
+        this.inputReader = visitorProvider.getInputReader();
     }
 
     @Override
@@ -94,24 +91,24 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
     @Override
     public Integer visitNegate(NegateContext ctx) {
-        return -1 * (int) visit(ctx.num_expr());
+        return -1 * visit(ctx.num_expr());
     }
 
     @Override
     public Integer visitParen(ParenContext ctx) {
-        return (int) visit(ctx.num_expr());
+        return visit(ctx.num_expr());
     }
 
     @Override
     public Integer visitLength(LengthContext ctx) {
-        String param = ((String) stringExpressionVisitor.visit(ctx.str_expr()));
+        String param = ((String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr()));
         return param.length();
     }
 
     @Override
     public Integer visitPosition(PositionContext ctx) {
-        String str = (String) stringExpressionVisitor.visit(ctx.str_expr(0));
-        String str2 = (String) stringExpressionVisitor.visit(ctx.str_expr(1));
+        String str = (String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr(0));
+        String str2 = (String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr(1));
         int position = str.indexOf(str2);
         if (position == -1) {
             return 0;
@@ -134,7 +131,7 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
         if (value != null) return value;
 
-        memoryManager.add(ident, DataType.NUM);
+        memoryManager.add(ident, DataType.NUMBER);
 
         return (int) (memoryManager.get(ident));
     }

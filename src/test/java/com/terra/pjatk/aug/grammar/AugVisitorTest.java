@@ -7,6 +7,11 @@ import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
+import com.terra.pjatk.aug.grammar.visitor.NumberExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.OutputExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.StringExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.provider.AugGrammarVisitorProvider;
+import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -17,7 +22,7 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class AugVisitorTest {
@@ -32,12 +37,20 @@ public class AugVisitorTest {
         InputReader mockInputReader = Mockito.mock(InputReader.class);
         Debugger debugger = new Debugger(false);
         memoryManager = new AugMemoryManager();
-        visitor = new AugVisitor(
-                mockInputReader,
-                mockOutputPrinter,
-                memoryManager,
-                debugger
-        );
+
+
+        var provider = AugGrammarVisitorProvider.builder()
+                .memoryManager(memoryManager)
+                .outputPrinter(mockOutputPrinter)
+                .debugger(debugger)
+                .inputReader(mockInputReader)
+                .build();
+
+        provider.addVisitor(ExpressionType.NUMBER, new NumberExpressionVisitor(provider));
+        provider.addVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
+        provider.addVisitor(ExpressionType.OUTPUT, new OutputExpressionVisitor(provider));
+
+        visitor = new AugVisitor(provider);
 
     }
 
@@ -51,7 +64,7 @@ public class AugVisitorTest {
 
         // Assert
         assertThat(memoryManager.get("x")).isEqualTo(1);
-        assertThat(memoryManager.getType("x")).isEqualTo(Optional.of(DataType.NUM));
+        assertThat(memoryManager.getType("x")).isEqualTo(Optional.of(DataType.NUMBER));
     }
 
     @Test
@@ -79,7 +92,7 @@ public class AugVisitorTest {
         visitor.visit(parseProgram(program).program());
 
         // Assert
-        assertThat(memoryManager.getType("y")).isEqualTo(Optional.of(DataType.NUM));
+        assertThat(memoryManager.getType("y")).isEqualTo(Optional.of(DataType.NUMBER));
     }
 
     @Test

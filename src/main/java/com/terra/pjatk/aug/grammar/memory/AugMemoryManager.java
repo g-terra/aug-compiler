@@ -13,7 +13,7 @@ public class AugMemoryManager implements MemoryManager {
     private final Map<String, DataType> types = new HashMap<>();
 
     private final Map<DataType, Object> defaultValues = Map.of(
-            DataType.NUM, 0,
+            DataType.NUMBER, 0,
             DataType.STRING, ""
     );
 

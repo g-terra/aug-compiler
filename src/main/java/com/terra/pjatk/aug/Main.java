@@ -3,10 +3,7 @@ package com.terra.pjatk.aug;
 import com.terra.pjatk.aug.grammar.AugVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarLexer;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.debuger.Debugger;
-import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
-import com.terra.pjatk.aug.utils.console.printer.ConsolePrinter;
-import com.terra.pjatk.aug.utils.console.reader.ConsoleReader;
+import com.terra.pjatk.aug.grammar.visitor.provider.AugGrammarVisitorProvider;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -20,7 +17,6 @@ public class Main {
 
     public static final Map<String, Object> params = new java.util.HashMap<>();
 
-    //initialize default values
     static {
         params.put("debug", false);
         params.put("prog", "prog1.txt");
@@ -28,11 +24,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-
         handleArgs(args);
 
         try {
-            // Read the input file.
             String input;
             try (InputStream is = Main.class.getClassLoader().getResourceAsStream("programs/" + params.get("prog"))) {
                 if (is == null) {
@@ -41,24 +35,11 @@ public class Main {
                 input = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             }
 
-            // Create a lexer and parser for the input.
-            AugGrammarLexer lexer = new AugGrammarLexer(CharStreams.fromString(input));
-            AugGrammarParser parser = new AugGrammarParser(new CommonTokenStream(lexer));
-
-            // Parse the input to create a parse tree.
-            ParseTree tree = parser.program();
-
-            Debugger debugger = new Debugger((boolean) params.get("debug"));
-
-
+            ParseTree tree = getParseTree(input);
 
             AugVisitor visitor = new AugVisitor(
-                    new ConsoleReader(),
-                    new ConsolePrinter(),
-                    new AugMemoryManager(),
-                    debugger
+                    AugGrammarVisitorProvider.defaultSetup((boolean) params.get("debug"))
             );
-
 
             visitor.visit(tree);
 
@@ -66,6 +47,12 @@ public class Main {
             System.err.println("Failed to read file: " + params.get("prog"));
             e.printStackTrace();
         }
+    }
+
+    private static ParseTree getParseTree(String input) {
+        AugGrammarLexer lexer = new AugGrammarLexer(CharStreams.fromString(input));
+        AugGrammarParser parser = new AugGrammarParser(new CommonTokenStream(lexer));
+        return parser.program();
     }
 
     private static void handleArgs(String[] args) {

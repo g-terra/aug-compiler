@@ -5,13 +5,11 @@ import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.visitors.NumberExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitors.OutputExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitors.StringExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
+import com.terra.pjatk.aug.grammar.visitor.provider.VisitorProvider;
 import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -23,55 +21,25 @@ import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
 public class AugVisitor extends AugGrammarBaseVisitor<Object> {
     @Getter
     private final Debugger debugger;
-    @Getter
-    @Setter
-    private StringExpressionVisitor stringExpressionVisitor;
-
-    @Getter
-    @Setter
-    private  NumberExpressionVisitor numberExpressionVisitor;
-
-    @Getter
-    @Setter
-    private  OutputExpressionVisitor outputExpressionVisitor ;
 
     @Getter
     private final OutputPrinter outputPrinter;
 
     @Getter
     private final InputReader inputReader;
+    private final VisitorProvider visitorProvider;
+
     private final MemoryManager memoryManager;
 
     public AugVisitor(
-            InputReader inputReader,
-            OutputPrinter outputPrinter,
-            MemoryManager memoryManager,
-            Debugger debugger
+            VisitorProvider visitorProvider
     ) {
 
-        this.outputPrinter = outputPrinter;
-        this.memoryManager = memoryManager;
-        this.debugger = debugger;
-        this.inputReader = inputReader;
-
-        this.numberExpressionVisitor = new NumberExpressionVisitor(
-                memoryManager,
-                debugger,
-                inputReader
-        );
-        this.stringExpressionVisitor = new StringExpressionVisitor(
-                memoryManager,
-                debugger,
-                inputReader
-        );
-
-        this.numberExpressionVisitor.setStringExpressionVisitor(stringExpressionVisitor);
-        this.stringExpressionVisitor.setNumberExpressionVisitor(numberExpressionVisitor);
-
-
-        this.outputExpressionVisitor = new OutputExpressionVisitor(outputPrinter);
-        this.outputExpressionVisitor.setNumberExpressionVisitor(numberExpressionVisitor);
-        this.outputExpressionVisitor.setStringExpressionVisitor(stringExpressionVisitor);
+        this.outputPrinter = visitorProvider.getOutputPrinter();
+        this.memoryManager = visitorProvider.getMemoryManager();
+        this.debugger = visitorProvider.getDebugger();
+        this.inputReader = visitorProvider.getInputReader();
+        this.visitorProvider = visitorProvider;
     }
 
 
@@ -91,7 +59,7 @@ public class AugVisitor extends AugGrammarBaseVisitor<Object> {
 
         if (Objects.nonNull(ctx.num_expr())) {
             value = visitNum_expr(ctx.num_expr());
-            type = DataType.NUM;
+            type = DataType.NUMBER;
         }
 
         if (Objects.nonNull(ctx.str_expr())) {
@@ -127,19 +95,17 @@ public class AugVisitor extends AugGrammarBaseVisitor<Object> {
 
     @Override
     public Object visitOutput_stat(Output_statContext ctx) {
-        return outputExpressionVisitor.visit(ctx);
+        return visitorProvider.provide(ExpressionType.OUTPUT).visit(ctx);
     }
 
     @Override
     public Object visitNum_expr(AugGrammarParser.Num_exprContext ctx) {
-        return numberExpressionVisitor.visit(ctx);
+        return visitorProvider.provide(ExpressionType.NUMBER).visit(ctx);
     }
 
     @Override
     public Object visitStr_expr(AugGrammarParser.Str_exprContext ctx) {
-        return stringExpressionVisitor.visit(ctx);
+        return visitorProvider.provide(ExpressionType.STRING).visit(ctx);
     }
-
-
 
 }

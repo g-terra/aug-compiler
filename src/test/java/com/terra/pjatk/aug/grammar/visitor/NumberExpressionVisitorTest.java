@@ -1,10 +1,11 @@
-package com.terra.pjatk.aug.grammar.visitors;
+package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.domain.DataType;
-import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
+import com.terra.pjatk.aug.grammar.visitor.provider.AugGrammarVisitorProvider;
+import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,13 +36,15 @@ class NumberExpressionVisitorTest {
 
         mockStringExpressionVisitor = mock(StringExpressionVisitor.class);
 
-        numberVisitor = new NumberExpressionVisitor(
-                memoryManager,
-                new Debugger(false),
-                mockInputReader
-        );
+        var provider = AugGrammarVisitorProvider.builder()
+                .memoryManager(memoryManager)
+                .inputReader(mockInputReader)
+                .build();
 
-        numberVisitor.setStringExpressionVisitor(mockStringExpressionVisitor);
+        provider.addVisitor(ExpressionType.STRING, mockStringExpressionVisitor);
+
+
+        numberVisitor = new NumberExpressionVisitor(provider);
 
     }
 
@@ -203,7 +206,7 @@ class NumberExpressionVisitorTest {
 
         //arrange
         var program = "position(x,\"e\")";
-        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello" , "e");
+        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello", "e");
 
         //act
         var result = visitNumExpr(program);
@@ -217,7 +220,7 @@ class NumberExpressionVisitorTest {
     public void should_return_zero_if_char_is_not_in_the_string() {
         //arrange
         var expression = "position(x,\"a\")";
-        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello" , "a");
+        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello", "a");
 
         //act
         var result = visitNumExpr(expression);
@@ -232,13 +235,13 @@ class NumberExpressionVisitorTest {
 
         // Arrange
         var expression = "x";
-        when(memoryManager.get(expression)).thenReturn(null , 0);
+        when(memoryManager.get(expression)).thenReturn(null, 0);
 
         // Act
         var result = visitNumExpr(expression);
 
         // Assert
-        verify(memoryManager).add("x", DataType.NUM );
+        verify(memoryManager).add("x", DataType.NUMBER);
         assertThat(result).isEqualTo(0);
 
     }

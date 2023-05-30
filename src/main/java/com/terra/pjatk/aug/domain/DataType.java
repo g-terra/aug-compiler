@@ -1,7 +1,7 @@
 package com.terra.pjatk.aug.domain;
 
 public enum DataType {
-    NUM,
+    NUMBER,
     STRING,
     UNDEFINED
 }
