@@ -3,8 +3,8 @@ package com.terra.pjatk.aug.grammar.visitor;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
-import com.terra.pjatk.aug.grammar.visitor.provider.AugGrammarVisitorProvider;
-import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
+import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,14 +36,14 @@ class OutputExpressionVisitorTest {
         stringExpressionVisitor = Mockito.mock(StringExpressionVisitor.class);
         numberExpressionVisitor = Mockito.mock(NumberExpressionVisitor.class);
 
-        var provider = AugGrammarVisitorProvider.builder()
+        var provider = AugGrammarContextProvider.builder()
                 .outputPrinter(outputPrinter)
                 .memoryManager(mock(MemoryManager.class))
                 .inputReader(mock(InputReader.class))
                 .build();
 
-        provider.addVisitor(ExpressionType.STRING,stringExpressionVisitor);
-        provider.addVisitor(ExpressionType.NUMBER,numberExpressionVisitor);
+        provider.registerVisitor(ExpressionType.STRING,stringExpressionVisitor);
+        provider.registerVisitor(ExpressionType.NUMBER,numberExpressionVisitor);
 
 
         outputExpressionVisitor = new OutputExpressionVisitor(provider);

@@ -1,9 +1,10 @@
-package com.terra.pjatk.aug.grammar.visitor.provider;
+package com.terra.pjatk.aug.grammar.context;
 
 import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.visitor.AssignStatementVisitor;
 import com.terra.pjatk.aug.grammar.visitor.NumberExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.OutputExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.StringExpressionVisitor;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Builder
 @AllArgsConstructor
-public class AugGrammarVisitorProvider implements VisitorProvider {
+public class AugGrammarContextProvider implements ContextProvider {
 
 
     @Singular
@@ -37,16 +38,16 @@ public class AugGrammarVisitorProvider implements VisitorProvider {
     private OutputPrinter outputPrinter;
 
     @Override
-    public void addVisitor(ExpressionType expressionType, AugGrammarVisitor<?> visitor) {
+    public void registerVisitor(ExpressionType expressionType, AugGrammarVisitor<?> visitor) {
         visitors.put(expressionType, visitor);
     }
 
     @Override
-    public AugGrammarVisitor<?> provide(ExpressionType expressionType) {
+    public AugGrammarVisitor<?> getVisitor(ExpressionType expressionType) {
         return visitors.get(expressionType);
     }
 
-    public static VisitorProvider defaultSetup(boolean debug) {
+    public static ContextProvider defaultSetup(boolean debug) {
 
         Debugger debugger = new Debugger(debug);
         ConsoleReader reader = new ConsoleReader();
@@ -54,7 +55,7 @@ public class AugGrammarVisitorProvider implements VisitorProvider {
         ConsolePrinter printer = new ConsolePrinter();
 
 
-        VisitorProvider provider = AugGrammarVisitorProvider.builder()
+        ContextProvider provider = AugGrammarContextProvider.builder()
                 .debugger(debugger)
                 .inputReader(reader)
                 .memoryManager(memoryManager)
@@ -62,9 +63,10 @@ public class AugGrammarVisitorProvider implements VisitorProvider {
 
 
 
-        provider.addVisitor(ExpressionType.NUMBER, new NumberExpressionVisitor(provider));
-        provider.addVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
-        provider.addVisitor(ExpressionType.OUTPUT, new OutputExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.NUMBER, new NumberExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.OUTPUT, new OutputExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.ASSIGN, new AssignStatementVisitor(provider));
 
         return provider;
 

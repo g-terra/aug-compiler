@@ -1,9 +1,9 @@
 package com.terra.pjatk.aug;
 
-import com.terra.pjatk.aug.grammar.AugVisitor;
+import com.terra.pjatk.aug.grammar.ProgramVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarLexer;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.visitor.provider.AugGrammarVisitorProvider;
+import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -37,8 +37,8 @@ public class Main {
 
             ParseTree tree = getParseTree(input);
 
-            AugVisitor visitor = new AugVisitor(
-                    AugGrammarVisitorProvider.defaultSetup((boolean) params.get("debug"))
+            ProgramVisitor visitor = new ProgramVisitor(
+                    AugGrammarContextProvider.defaultSetup((boolean) params.get("debug"))
             );
 
             visitor.visit(tree);

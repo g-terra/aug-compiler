@@ -4,8 +4,8 @@ import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
-import com.terra.pjatk.aug.grammar.visitor.provider.VisitorProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.context.ContextProvider;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 
 import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
@@ -16,17 +16,17 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
     private final MemoryManager memoryManager;
 
     private final InputReader inputReader;
-    private final VisitorProvider visitorProvider;
+    private final ContextProvider contextProvider;
     private final Debugger debugger;
 
 
     public NumberExpressionVisitor(
-            VisitorProvider visitorProvider
+            ContextProvider contextProvider
     ) {
-        this.visitorProvider = visitorProvider;
-        this.memoryManager = visitorProvider.getMemoryManager();
-        this.debugger = visitorProvider.getDebugger();
-        this.inputReader = visitorProvider.getInputReader();
+        this.contextProvider = contextProvider;
+        this.memoryManager = contextProvider.getMemoryManager();
+        this.debugger = contextProvider.getDebugger();
+        this.inputReader = contextProvider.getInputReader();
     }
 
     @Override
@@ -101,14 +101,14 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
     @Override
     public Integer visitLength(LengthContext ctx) {
-        String param = ((String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr()));
+        String param = ((String) contextProvider.getVisitor(ExpressionType.STRING).visit(ctx.str_expr()));
         return param.length();
     }
 
     @Override
     public Integer visitPosition(PositionContext ctx) {
-        String str = (String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr(0));
-        String str2 = (String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr(1));
+        String str = (String) contextProvider.getVisitor(ExpressionType.STRING).visit(ctx.str_expr(0));
+        String str2 = (String) contextProvider.getVisitor(ExpressionType.STRING).visit(ctx.str_expr(1));
         int position = str.indexOf(str2);
         if (position == -1) {
             return 0;

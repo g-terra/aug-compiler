@@ -5,8 +5,8 @@ import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
-import com.terra.pjatk.aug.grammar.visitor.provider.VisitorProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.context.ContextProvider;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 
 
@@ -16,15 +16,15 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
     private final MemoryManager memoryManager;
     private final Debugger debugger;
     private final InputReader inputReader;
-    private final VisitorProvider visitorProvider;
+    private final ContextProvider contextProvider;
 
     public StringExpressionVisitor(
-            VisitorProvider visitorProvider
+            ContextProvider contextProvider
     ) {
-        this.visitorProvider = visitorProvider;
-        this.memoryManager = visitorProvider.getMemoryManager();
-        this.debugger = visitorProvider.getDebugger();
-        this.inputReader = visitorProvider.getInputReader();
+        this.contextProvider = contextProvider;
+        this.memoryManager = contextProvider.getMemoryManager();
+        this.debugger = contextProvider.getDebugger();
+        this.inputReader = contextProvider.getInputReader();
     }
 
     @Override
@@ -60,8 +60,8 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
     public String visitSubstring(AugGrammarParser.SubstringContext ctx) {
 
         String str = visitStr_expr(ctx.str_expr());
-        int pos = (int) visitorProvider.provide(ExpressionType.NUMBER).visit(ctx.num_expr(0));
-        int length = (int) visitorProvider.provide(ExpressionType.NUMBER).visit(ctx.num_expr(1));
+        int pos = (int) contextProvider.getVisitor(ExpressionType.NUMBER).visit(ctx.num_expr(0));
+        int length = (int) contextProvider.getVisitor(ExpressionType.NUMBER).visit(ctx.num_expr(1));
 
         if (pos < 1 || pos > str.length() || length <= 0) return "";
 

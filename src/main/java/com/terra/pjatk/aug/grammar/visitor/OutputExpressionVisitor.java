@@ -2,8 +2,8 @@ package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.visitor.provider.ExpressionType;
-import com.terra.pjatk.aug.grammar.visitor.provider.VisitorProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.context.ContextProvider;
 import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
 
 import java.util.Objects;
@@ -12,13 +12,13 @@ public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
 
 
     private final OutputPrinter outputPrinter;
-    private final VisitorProvider visitorProvider;
+    private final ContextProvider contextProvider;
 
     public OutputExpressionVisitor(
-            VisitorProvider visitorProvider
+            ContextProvider contextProvider
     ) {
-        this.visitorProvider = visitorProvider;
-        this.outputPrinter = visitorProvider.getOutputPrinter();
+        this.contextProvider = contextProvider;
+        this.outputPrinter = contextProvider.getOutputPrinter();
     }
 
     @Override
@@ -46,12 +46,12 @@ public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
 
     @Override
     public Integer visitPrintable_num_expr(AugGrammarParser.Printable_num_exprContext ctx) {
-        return (Integer) visitorProvider.provide(ExpressionType.NUMBER).visit(ctx.num_expr());
+        return (Integer) contextProvider.getVisitor(ExpressionType.NUMBER).visit(ctx.num_expr());
     }
 
     @Override
     public String visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
-        return (String) visitorProvider.provide(ExpressionType.STRING).visit(ctx.str_expr());
+        return (String) contextProvider.getVisitor(ExpressionType.STRING).visit(ctx.str_expr());
     }
 
 

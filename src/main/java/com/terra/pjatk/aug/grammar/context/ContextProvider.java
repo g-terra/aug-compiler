@@ -1,12 +1,12 @@
-package com.terra.pjatk.aug.grammar.visitor.provider;
+package com.terra.pjatk.aug.grammar.context;
 
 import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
 
-public interface VisitorProvider {
+public interface ContextProvider {
 
-    void addVisitor(ExpressionType expressionType, AugGrammarVisitor<?> visitor);
+    void registerVisitor(ExpressionType expressionType, AugGrammarVisitor<?> visitor);
 
-    AugGrammarVisitor<?> provide(ExpressionType expressionType);
+    AugGrammarVisitor<?> getVisitor(ExpressionType expressionType);
 
     com.terra.pjatk.aug.grammar.memory.MemoryManager getMemoryManager();
 
