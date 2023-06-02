@@ -11,6 +11,14 @@ import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
 @RequiredArgsConstructor
 public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
+
+    private static final String ADDITION = "+";
+    private static final String SUBTRACTION = "-";
+    private static final String MULTIPLICATION = "*";
+    private static final String DIVISION = "/";
+    private static final String MODULO = "%";
+
+
     private final ContextProvider contextProvider;
 
     @Override
@@ -21,51 +29,35 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
     @Override
     public Integer visitNum_expr(Num_exprContext ctx) {
-        int result = visit(ctx.t_num_expr(0));
-        for (int i = 1; i < ctx.t_num_expr().size(); i++) {
-            String op = ctx.getChild(i * 2 - 1).getText(); // get the operator
-            int value = visit(ctx.t_num_expr(i)); // get the value of the t_num_expr
-            switch (op) {
-                case "+" -> result += value;
-                case "-" -> result -= value;
-            }
+        if (ctx.num_expr() != null) {
+            String operator = ctx.getChild(1).getText();
+            int firstExprResult = visit(ctx.num_expr());
+            int secondExprResult = visit(ctx.t_num_expr());
+            return switch (operator) {
+                case ADDITION -> firstExprResult + secondExprResult;
+                case SUBTRACTION -> firstExprResult - secondExprResult;
+                default -> throw new IllegalArgumentException("Unexpected operator: " + operator);
+            };
         }
-        return result;
+        return visit(ctx.t_num_expr());
     }
 
     @Override
     public Integer visitT_num_expr(T_num_exprContext ctx) {
-        try {
-            int result = visitF_num_expr(ctx.f_num_expr(0));
-            for (int i = 1; i < ctx.f_num_expr().size(); i++) {
-                String op = ctx.getChild(i * 2 - 1).getText();
-                int value = visitF_num_expr(ctx.f_num_expr(i));
-                switch (op) {
-                    case "*" -> result *= value;
-                    case "/" -> result /= value;
-                    case "%" -> result %= value;
-                }
-            }
-            return result;
-        } catch (ClassCastException e) {
-            throw new RuntimeException("Please check your expression. A numeric expression contains a non-integer value. Expression: " + ctx.getText() + " at line: " + ctx.start.getLine());
-        }
-    }
+        T_num_exprContext t_num_expr = ctx.t_num_expr();
+        if (t_num_expr != null) {
+            String operator = ctx.getChild(1).getText();
+            int firstExprResult = visit(t_num_expr);
+            int secondExprResult = visit(ctx.f_num_expr());
 
-    @Override
-    public Integer visitF_num_expr(F_num_exprContext ctx) {
-        return switch (ctx.children.get(0).getClass().getSimpleName()) {
-            case "NumContext" -> visitNum(ctx.num());
-            case "IdentContext" -> visitIdent(ctx.ident());
-            case "Read_intContext" -> visitRead_int(ctx.read_int());
-            case "NegateContext" -> visitNegate(ctx.negate());
-            case "Paren_numContext" -> visitParen_num(ctx.paren_num());
-            case "LengthContext" -> visitLength(ctx.length());
-            case "PositionContext" -> visitPosition(ctx.position());
-            default -> throw new RuntimeException(
-                    "Unexpected value: " + ctx.children.get(0).getClass().getSimpleName() + " at line: " + ctx.start.getLine()
-            );
-        };
+            return switch (operator) {
+                case MULTIPLICATION -> firstExprResult * secondExprResult;
+                case DIVISION -> firstExprResult / secondExprResult;
+                case MODULO -> firstExprResult % secondExprResult;
+                default -> throw new IllegalArgumentException("Unexpected operator: " + operator);
+            };
+        }
+        return visit(ctx.f_num_expr());
     }
 
     @Override
@@ -79,7 +71,7 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitParen_num(Paren_numContext ctx) {
+    public Integer visitSub_num_expr(Sub_num_exprContext ctx) {
         return visit(ctx.num_expr());
     }
 
@@ -119,6 +111,5 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
         return (int) (contextProvider.getMemoryManager().get(ident));
     }
-
 
 }

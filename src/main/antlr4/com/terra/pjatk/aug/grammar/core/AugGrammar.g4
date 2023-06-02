@@ -48,18 +48,26 @@ printable_undef : { isUndefined(_input.LT(1).getText()) }? IDENT ;
 printable_num_expr : { isNum(_input.LT(1).getText()) }? num_expr ;
 printable_str_expr : { isStr(_input.LT(1).getText()) }? str_expr ;
 
-num_expr : t_num_expr ( '+' t_num_expr | '-' t_num_expr)* ;
-t_num_expr : f_num_expr ( '*' f_num_expr | '/' f_num_expr | '%' f_num_expr)* ;
+
+num_expr : num_expr '+' t_num_expr
+    | num_expr '-' t_num_expr
+    | t_num_expr ;
+
+t_num_expr:  t_num_expr '*' f_num_expr
+    | t_num_expr '/' f_num_expr
+    | t_num_expr '%' f_num_expr
+    | f_num_expr ;
+
 f_num_expr : num
     | ident
     | read_int
     | negate
-    | paren_num
+    | sub_num_expr
     | length
     | position ;
 
 negate : '-' num_expr ;
-paren_num : '(' num_expr ')' ;
+sub_num_expr : '(' num_expr ')' ;
 read_int : 'readint' ;
 length : 'length' '(' str_expr ')' ;
 position : 'position' '(' str_expr ',' str_expr ')' ;

@@ -89,11 +89,11 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNegate(AugGrammarParser.NegateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AugGrammarParser#paren_num}.
+	 * Visit a parse tree produced by {@link AugGrammarParser#sub_num_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParen_num(AugGrammarParser.Paren_numContext ctx);
+	T visitSub_num_expr(AugGrammarParser.Sub_num_exprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#read_int}.
 	 * @param ctx the parse tree

@@ -20,19 +20,6 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
     }
 
     @Override
-    public String  visitStr_expr(AugGrammarParser.Str_exprContext ctx) {
-        return switch (ctx.children.get(0).getClass().getSimpleName()) {
-            case "StringContext" -> visitString(ctx.string());
-            case "IdentContext" -> visitIdent(ctx.ident());
-            case "Read_strContext" -> visitRead_str(ctx.read_str());
-            case "ConcatenateContext" -> visitConcatenate(ctx.concatenate());
-            case "SubstringContext" -> visitSubstring(ctx.substring());
-            default ->
-                    throw new RuntimeException("Unexpected value: " + ctx.children.get(0).getClass().getSimpleName() + " at line: " + ctx.start.getLine());
-        };
-    }
-
-    @Override
     public String visitRead_str(AugGrammarParser.Read_strContext ctx) {
         return contextProvider.getInputReader().readString();
     }
