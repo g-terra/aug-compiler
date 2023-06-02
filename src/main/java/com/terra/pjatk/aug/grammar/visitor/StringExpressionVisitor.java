@@ -1,35 +1,21 @@
 package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.domain.DataType;
+import com.terra.pjatk.aug.grammar.context.ContextProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.debuger.Debugger;
-import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.context.ExpressionType;
-import com.terra.pjatk.aug.grammar.context.ContextProvider;
-import com.terra.pjatk.aug.utils.console.reader.InputReader;
+import lombok.RequiredArgsConstructor;
 
 
+@RequiredArgsConstructor
 public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
 
-
-    private final MemoryManager memoryManager;
-    private final Debugger debugger;
-    private final InputReader inputReader;
     private final ContextProvider contextProvider;
-
-    public StringExpressionVisitor(
-            ContextProvider contextProvider
-    ) {
-        this.contextProvider = contextProvider;
-        this.memoryManager = contextProvider.getMemoryManager();
-        this.debugger = contextProvider.getDebugger();
-        this.inputReader = contextProvider.getInputReader();
-    }
 
     @Override
     public String visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
-        debugger.log("Visiting printable expression as str_expr. Expression: {}", ctx.str_expr().getText());
+        contextProvider.getDebugger().log("Visiting printable expression as str_expr. Expression: {}", ctx.str_expr().getText());
         return visitStr_expr(ctx.str_expr());
     }
 
@@ -48,7 +34,7 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
 
     @Override
     public String visitRead_str(AugGrammarParser.Read_strContext ctx) {
-        return inputReader.readString();
+        return contextProvider.getInputReader().readString();
     }
 
     @Override
@@ -80,10 +66,10 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
 
         String ident = ctx.IDENT().getText();
 
-        String value = (String) memoryManager.get(ident);
+        String value = (String) contextProvider.getMemoryManager().get(ident);
         if (value != null) return value;
 
-        memoryManager.add(ident, DataType.STRING);
-        return String.valueOf(memoryManager.get(ident));
+        contextProvider.getMemoryManager().add(ident, DataType.STRING);
+        return String.valueOf(contextProvider.getMemoryManager().get(ident));
     }
 }

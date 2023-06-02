@@ -4,26 +4,19 @@ import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.context.ContextProvider;
-import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
+@RequiredArgsConstructor
 public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
 
 
-    private final OutputPrinter outputPrinter;
     private final ContextProvider contextProvider;
-
-    public OutputExpressionVisitor(
-            ContextProvider contextProvider
-    ) {
-        this.contextProvider = contextProvider;
-        this.outputPrinter = contextProvider.getOutputPrinter();
-    }
 
     @Override
     public Object visitOutput_stat(AugGrammarParser.Output_statContext ctx) {
-        outputPrinter.print(String.valueOf(visitPrintable_expr(ctx.printable_expr())));
+        contextProvider.getOutputPrinter().print(String.valueOf(visitPrintable_expr(ctx.printable_expr())));
         return null;
     }
 

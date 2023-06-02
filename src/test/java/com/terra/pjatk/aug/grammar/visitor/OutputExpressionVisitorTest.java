@@ -43,7 +43,7 @@ class OutputExpressionVisitorTest {
                 .build();
 
         provider.registerVisitor(ExpressionType.STRING,stringExpressionVisitor);
-        provider.registerVisitor(ExpressionType.NUMBER,numberExpressionVisitor);
+        provider.registerVisitor(ExpressionType.NUMBER, numberExpressionVisitor);
 
 
         outputExpressionVisitor = new OutputExpressionVisitor(provider);

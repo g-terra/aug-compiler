@@ -1,37 +1,21 @@
 package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.domain.DataType;
-import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
-import com.terra.pjatk.aug.grammar.debuger.Debugger;
-import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.context.ContextProvider;
-import com.terra.pjatk.aug.utils.console.reader.InputReader;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
+import lombok.RequiredArgsConstructor;
 
 import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
 
+@RequiredArgsConstructor
 public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
-
-    private final MemoryManager memoryManager;
-
-    private final InputReader inputReader;
     private final ContextProvider contextProvider;
-    private final Debugger debugger;
-
-
-    public NumberExpressionVisitor(
-            ContextProvider contextProvider
-    ) {
-        this.contextProvider = contextProvider;
-        this.memoryManager = contextProvider.getMemoryManager();
-        this.debugger = contextProvider.getDebugger();
-        this.inputReader = contextProvider.getInputReader();
-    }
 
     @Override
     public Integer visitPrintable_num_expr(Printable_num_exprContext ctx) {
-        debugger.log("Visiting printable expression as num_expr. Expression: {}", ctx.num_expr().getText());
+        contextProvider.getDebugger().log("Visiting printable expression as num_expr. Expression: {}", ctx.num_expr().getText());
         return visitNum_expr(ctx.num_expr());
     }
 
@@ -86,7 +70,7 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
     @Override
     public Integer visitRead_int(Read_intContext ctx) {
-        return inputReader.readInteger();
+        return contextProvider.getInputReader().readInteger();
     }
 
     @Override
@@ -127,13 +111,13 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
 
         String ident = ctx.IDENT().getText();
 
-        Integer value = (Integer) memoryManager.get(ident);
+        Integer value = (Integer) contextProvider.getMemoryManager().get(ident);
 
         if (value != null) return value;
 
-        memoryManager.add(ident, DataType.NUMBER);
+        contextProvider.getMemoryManager().add(ident, DataType.NUMBER);
 
-        return (int) (memoryManager.get(ident));
+        return (int) (contextProvider.getMemoryManager().get(ident));
     }
 
 

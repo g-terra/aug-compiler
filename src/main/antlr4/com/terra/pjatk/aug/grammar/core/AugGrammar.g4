@@ -74,6 +74,21 @@ read_str : 'readstr' ;
 concatenate : 'concatenate' '(' str_expr ',' str_expr ')' ;
 substring : 'substring' '(' str_expr ',' num_expr ',' num_expr ')' ;
 
+num_rel_expr : num_expr num_rel num_expr ;
+num_rel: num_eq_rel | num_lt_rel | num_le_rel | num_gt_rel | num_ge_rel | num_neq_rel ;
+num_eq_rel : '=';
+num_lt_rel : '<';
+num_le_rel : '<=';
+num_gt_rel : '>';
+num_ge_rel : '>=';
+num_neq_rel : '<>';
+
+str_rel_expr : str_expr str_rel str_expr ;
+str_rel: str_eq_rel | str_neq_rel ;
+str_eq_rel : '==';
+str_neq_rel : '!=';
+
+
 ident : IDENT ;
 num : NUM ;
 string : STRING ;

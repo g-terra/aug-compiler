@@ -4,10 +4,7 @@ import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
-import com.terra.pjatk.aug.grammar.visitor.AssignStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.NumberExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.OutputExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.StringExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.*;
 import com.terra.pjatk.aug.utils.console.printer.ConsolePrinter;
 import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
 import com.terra.pjatk.aug.utils.console.reader.ConsoleReader;
@@ -67,6 +64,8 @@ public class AugGrammarContextProvider implements ContextProvider {
         provider.registerVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.OUTPUT, new OutputExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.ASSIGN, new AssignStatementVisitor(provider));
+        provider.registerVisitor(ExpressionType.NUMBER_RELATION, new NumberRelationExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.STRING_RELATION, new StringRelationExpressionVisitor(provider));
 
         return provider;
 

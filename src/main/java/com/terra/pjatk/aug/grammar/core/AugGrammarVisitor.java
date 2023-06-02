@@ -137,6 +137,78 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSubstring(AugGrammarParser.SubstringContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_rel_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_rel_expr(AugGrammarParser.Num_rel_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_rel(AugGrammarParser.Num_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_eq_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_eq_rel(AugGrammarParser.Num_eq_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_lt_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_lt_rel(AugGrammarParser.Num_lt_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_le_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_le_rel(AugGrammarParser.Num_le_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_gt_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_gt_rel(AugGrammarParser.Num_gt_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_ge_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_ge_rel(AugGrammarParser.Num_ge_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#num_neq_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNum_neq_rel(AugGrammarParser.Num_neq_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#str_rel_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStr_rel_expr(AugGrammarParser.Str_rel_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#str_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStr_rel(AugGrammarParser.Str_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#str_eq_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStr_eq_rel(AugGrammarParser.Str_eq_relContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#str_neq_rel}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStr_neq_rel(AugGrammarParser.Str_neq_relContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#ident}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
