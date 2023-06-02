@@ -1,9 +1,8 @@
 package com.terra.pjatk.aug.grammar;
 
-import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
-import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.context.ContextProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.terra.pjatk.aug.grammar.core.AugGrammarParser.*;
@@ -25,23 +24,12 @@ public class ProgramVisitor extends AugGrammarBaseVisitor<Object> {
     }
 
     @Override
-    public Object visitIdent(IdentContext ctx) {
-        return contextProvider.getVisitor(ExpressionType.ASSIGN).visit(ctx);
-    }
-
-    @Override
     public Object visitOutput_stat(Output_statContext ctx) {
         return contextProvider.getVisitor(ExpressionType.OUTPUT).visit(ctx);
     }
 
     @Override
-    public Object visitNum_expr(AugGrammarParser.Num_exprContext ctx) {
-        return contextProvider.getVisitor(ExpressionType.NUMBER).visit(ctx);
+    public Object visitIf_stat(If_statContext ctx) {
+        return contextProvider.getVisitor(ExpressionType.IF_STATEMENT).visit(ctx);
     }
-
-    @Override
-    public Object visitStr_expr(AugGrammarParser.Str_exprContext ctx) {
-        return contextProvider.getVisitor(ExpressionType.STRING).visit(ctx);
-    }
-
 }

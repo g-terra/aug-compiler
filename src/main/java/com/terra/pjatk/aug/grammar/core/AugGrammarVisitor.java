@@ -65,6 +65,24 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#if_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_stat(AugGrammarParser.If_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#if_then_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_then_stat(AugGrammarParser.If_then_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#if_then_else_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_then_else_stat(AugGrammarParser.If_then_else_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#num_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

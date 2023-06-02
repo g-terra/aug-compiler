@@ -1,8 +1,9 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.expression;
 
 import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
@@ -197,7 +198,8 @@ class StringExpressionVisitorTest {
     @ParameterizedTest(name = "should return \"{1}\" for {0}")
     @MethodSource("provideSubstringTestCases")
     public void testSubstring(String expression, int from, int to, String expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(from, to);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(String.valueOf(from))))).thenReturn(from);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(String.valueOf(to))))).thenReturn(to);
         var result = visitStringExpression(expression);
         assertThat(result).isEqualTo(expected);
     }
@@ -209,7 +211,7 @@ class StringExpressionVisitorTest {
                 Arguments.of("substring(\"Hello, world!\", 50, 5);" , 50, 5, ""),
                 Arguments.of("substring(\"Hello, world!\", 1, -5);" , 1, -5, ""),
                 Arguments.of("substring(\"Hello, world!\", 10, 10);" , 10, 10, "rld!"),
-                Arguments.of("substring(\"Hello, world!\", 10, 100);" , 13, 100, "!")
+                Arguments.of("substring(\"Hello, world!\", 13, 100);" , 13, 100, "!")
         );
     }
 

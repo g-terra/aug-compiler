@@ -1,9 +1,10 @@
 package com.terra.pjatk.aug;
 
-import com.terra.pjatk.aug.grammar.ProgramVisitor;
+import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
+import com.terra.pjatk.aug.grammar.context.ContextProvider;
+import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.core.AugGrammarLexer;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
-import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -18,7 +19,7 @@ public class Main {
     public static final Map<String, Object> params = new java.util.HashMap<>();
 
     static {
-        params.put("debug", false);
+        params.put("debug", true);
         params.put("prog", "prog1.txt");
     }
 
@@ -37,11 +38,9 @@ public class Main {
 
             ParseTree tree = getParseTree(input);
 
-            ProgramVisitor visitor = new ProgramVisitor(
-                    AugGrammarContextProvider.defaultSetup((boolean) params.get("debug"))
-            );
+            ContextProvider provider = AugGrammarContextProvider.defaultSetup((boolean) params.get("debug"));
 
-            visitor.visit(tree);
+            provider.getVisitor(ExpressionType.PROGRAM).visit(tree);
 
         } catch (IOException e) {
             System.err.println("Failed to read file: " + params.get("prog"));

@@ -1,8 +1,9 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.expression;
 
 import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
@@ -190,7 +191,7 @@ class NumberExpressionVisitorTest {
     public void should_return_right_length_for_string() {
         //arrange
         var expression = "length(x)";
-        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello");
+        when(mockStringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("x")))).thenReturn("hello");
 
         //act
         var result = visitNumExpr(expression);
@@ -206,7 +207,8 @@ class NumberExpressionVisitorTest {
 
         //arrange
         var program = "position(x,\"e\")";
-        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello", "e");
+        when(mockStringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("x")))).thenReturn("hello");
+        when(mockStringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("\"e\"")))).thenReturn("e");
 
         //act
         var result = visitNumExpr(program);
@@ -220,7 +222,8 @@ class NumberExpressionVisitorTest {
     public void should_return_zero_if_char_is_not_in_the_string() {
         //arrange
         var expression = "position(x,\"a\")";
-        when(mockStringExpressionVisitor.visit(any())).thenReturn("hello", "a");
+        when(mockStringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("x")))).thenReturn("hello");
+        when(mockStringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("\"a\"")))).thenReturn("a");
 
         //act
         var result = visitNumExpr(expression);

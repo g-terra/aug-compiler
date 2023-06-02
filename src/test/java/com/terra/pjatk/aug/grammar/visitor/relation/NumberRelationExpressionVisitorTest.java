@@ -1,11 +1,13 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.relation;
 
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
+import com.terra.pjatk.aug.grammar.visitor.expression.NumberExpressionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 public class NumberRelationExpressionVisitorTest {
@@ -47,7 +49,8 @@ public class NumberRelationExpressionVisitorTest {
             "1, 1, true"
     })
     void shouldReturnCorrectValueForNumberEqualExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + "=" + right)).isEqualTo(expected);
     }
 
@@ -58,7 +61,8 @@ public class NumberRelationExpressionVisitorTest {
             "1, 1, false"
     })
     void shouldReturnCorrectValueForNumberGreaterThanExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + ">" + right)).isEqualTo(expected);
     }
 
@@ -69,7 +73,8 @@ public class NumberRelationExpressionVisitorTest {
             "1, 1, true"
     })
     void shouldReturnCorrectValueForNumberGreaterThanOrEqualExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + ">=" + right)).isEqualTo(expected);
     }
 
@@ -81,7 +86,8 @@ public class NumberRelationExpressionVisitorTest {
             "1, 1, false"
     })
     void shouldReturnCorrectValueForNumberLessThanExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + "<" + right)).isEqualTo(expected);
     }
 
@@ -92,7 +98,8 @@ public class NumberRelationExpressionVisitorTest {
             "1, 1, true"
     })
     void shouldReturnCorrectValueForNumberLessThanOrEqualExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + "<=" + right)).isEqualTo(expected);
     }
 
@@ -104,7 +111,8 @@ public class NumberRelationExpressionVisitorTest {
     })
 
     void shouldReturnCorrectValueForNumberNotEqualExpression(Integer left, Integer right, Boolean expected) {
-        when(numberExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left.toString())))).thenReturn(left);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right.toString())))).thenReturn(right);
         assertThat(visitRelation(left + "<>" + right)).isEqualTo(expected);
     }
 
@@ -114,4 +122,6 @@ public class NumberRelationExpressionVisitorTest {
                 ProgramParser.parse(expression).num_rel_expr()
         );
     }
+
+
 }

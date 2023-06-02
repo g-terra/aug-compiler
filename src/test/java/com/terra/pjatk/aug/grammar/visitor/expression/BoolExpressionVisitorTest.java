@@ -1,11 +1,14 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.expression;
 
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
+import com.terra.pjatk.aug.grammar.visitor.relation.NumberRelationExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.relation.StringRelationExpressionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,9 +17,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
-
 
 public class BoolExpressionVisitorTest {
 
@@ -149,21 +151,21 @@ public class BoolExpressionVisitorTest {
 
     @Test
     void should_handle_string_relation_expression() {
-        when(stringRelationExpressionVisitor.visit(Mockito.any())).thenReturn(true);
-        assertThat(visitBoolExpression("\"test\" == \"test\"")).isEqualTo(true);
+        when(stringRelationExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("\"test\"==\"test\"")))).thenReturn(true);
+        assertThat(visitBoolExpression("\"test\"==\"test\"")).isEqualTo(true);
     }
 
     @Test
     void should_handle_number_relation_expression() {
-        when(numberRelationExpressionVisitor.visit(Mockito.any())).thenReturn(true);
-        assertThat(visitBoolExpression("1 = 1")).isEqualTo(true);
+        when(numberRelationExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("1=1")))).thenReturn(true);
+        assertThat(visitBoolExpression("1=1")).isEqualTo(true);
     }
 
     @Test
     void should_handle_number_relation_with_string_relation(){
-        when(numberRelationExpressionVisitor.visit(Mockito.any())).thenReturn(true);
-        when(stringRelationExpressionVisitor.visit(Mockito.any())).thenReturn(true);
-        assertThat(visitBoolExpression("1 = 1 and \"test\" == \"test\"")).isEqualTo(true);
+        when(numberRelationExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("1=1")))).thenReturn(true);
+        when(stringRelationExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("\"test\"==\"test\"")))).thenReturn(false);
+        assertThat(visitBoolExpression("1 = 1 and \"test\" == \"test\"")).isEqualTo(false);
     }
 
     private boolean visitBoolExpression(String expression) {

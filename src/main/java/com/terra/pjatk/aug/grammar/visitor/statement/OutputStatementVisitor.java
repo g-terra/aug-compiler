@@ -1,4 +1,4 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.statement;
 
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class OutputExpressionVisitor extends AugGrammarBaseVisitor<Object> {
+public class OutputStatementVisitor extends AugGrammarBaseVisitor<Object> {
 
 
     private final ContextProvider contextProvider;

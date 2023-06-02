@@ -1,10 +1,13 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.statement;
 
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.visitor.expression.NumberExpressionVisitor;
+import com.terra.pjatk.aug.grammar.visitor.expression.StringExpressionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +20,11 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class OutputExpressionVisitorTest {
+class OutputStatementVisitorTest {
 
-    OutputExpressionVisitor outputExpressionVisitor;
+    OutputStatementVisitor outputStatementVisitor;
 
     TestOutputPrinter outputPrinter = new TestOutputPrinter();
 
@@ -46,7 +48,7 @@ class OutputExpressionVisitorTest {
         provider.registerVisitor(ExpressionType.NUMBER, numberExpressionVisitor);
 
 
-        outputExpressionVisitor = new OutputExpressionVisitor(provider);
+        outputStatementVisitor = new OutputStatementVisitor(provider);
 
     }
 
@@ -55,7 +57,7 @@ class OutputExpressionVisitorTest {
     void should_print_string() {
         // Arrange
         var program = "print(\"hello\");";
-        when(stringExpressionVisitor.visit(any())).thenReturn("hello");
+        when(stringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("\"hello\"")))).thenReturn("hello");
 
         // Act
         visitOutputExpression(program);
@@ -69,7 +71,7 @@ class OutputExpressionVisitorTest {
     void should_print_number() {
         // Arrange
         var program = "print(1);";
-        when(numberExpressionVisitor.visit(any())).thenReturn(1);
+        when(numberExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher("1")))).thenReturn(1);
 
         // Act
         visitOutputExpression(program);
@@ -94,52 +96,52 @@ class OutputExpressionVisitorTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("printStringExprProvider")
-    public void should_evaluate_input_as_string_exp(String expression) {
+    public void should_evaluate_input_as_string_exp(String expression , String subExpression) {
 
         // Act
         visitOutputExpression(expression);
 
         // Assert
-        verify(stringExpressionVisitor).visit(any());
+        verify(stringExpressionVisitor).visit(argThat(new ParseTreeArgumentMatcher(subExpression)));
     }
 
 
     private static Stream<Arguments> printStringExprProvider() {
         return Stream.of(
-                Arguments.of("print(\"hello\")"),
-                Arguments.of("print(\"\")"),
-                Arguments.of("print(concatenate(\"hello\",\"world\"))"),
-                Arguments.of("print(substring(a,length(a),1));")
+                Arguments.of("print(\"hello\")" , "\"hello\""),
+                Arguments.of("print(\"\")" , "\"\""),
+                Arguments.of("print(concatenate(\"hello\",\"world\"))" , "concatenate(\"hello\",\"world\")"),
+                Arguments.of("print(substring(a,length(a),1));" , "substring(a,length(a),1)")
         );
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("printNumExpProvider")
-    public void should_evaluate_input_as_number_exp(String expression) {
+    public void should_evaluate_input_as_number_exp(String expression, String subExpression) {
         // Act
         visitOutputExpression(expression);
 
         // Assert
-        verify(numberExpressionVisitor).visit(any());
+        verify(numberExpressionVisitor).visit(argThat(new ParseTreeArgumentMatcher(subExpression)));
     }
 
 
     private static Stream<Arguments> printNumExpProvider() {
         return Stream.of(
-                Arguments.of("print(1)"),
-                Arguments.of("print(2*x)"),
-                Arguments.of("print(2*x+1)"),
-                Arguments.of("print(2*x+1+2)"),
-                Arguments.of("print(2*x+1+2+3)"),
-                Arguments.of("print((2*x+1)+2+(3+4))"),
-                Arguments.of("print(length(\"hello\"))"),
-                Arguments.of("print(position(\"hello\",O))")
+                Arguments.of("print(1)" , "1"),
+                Arguments.of("print(2*x)" , "2*x"),
+                Arguments.of("print(2*x+1)" , "2*x+1"),
+                Arguments.of("print(2*x+1+2)" , "2*x+1+2"),
+                Arguments.of("print(2*x+1+2+3)" , "2*x+1+2+3"),
+                Arguments.of("print((2*x+1)+2+(3+4))" , "(2*x+1)+2+(3+4)"),
+                Arguments.of("print(length(\"hello\"))" , "length(\"hello\")"),
+                Arguments.of("print(position(\"hello\",O))" , "position(\"hello\",O)")
         );
     }
 
 
     private void visitOutputExpression(String expression) {
-        outputExpressionVisitor.visit(ProgramParser.parse(expression).output_stat());
+        outputStatementVisitor.visit(ProgramParser.parse(expression).output_stat());
     }
 
 }

@@ -1,4 +1,4 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.statement;
 
 import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.context.ContextProvider;

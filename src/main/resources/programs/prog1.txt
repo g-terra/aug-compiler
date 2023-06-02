@@ -1,0 +1,3 @@
+print("Enter a number:");
+input:=readint;
+if (input%2)=0 then print("Even") else print("Odd");

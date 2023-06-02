@@ -5,5 +5,8 @@ public enum ExpressionType {
     STRING,
     ASSIGN,
     NUMBER_RELATION,
-    STRING_RELATION, BOOL, OUTPUT
+    STRING_RELATION,
+    BOOL,
+    IF_STATEMENT,
+    PROGRAM, OUTPUT
 }

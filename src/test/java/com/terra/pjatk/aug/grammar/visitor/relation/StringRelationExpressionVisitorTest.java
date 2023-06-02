@@ -1,10 +1,12 @@
-package com.terra.pjatk.aug.grammar.visitor;
+package com.terra.pjatk.aug.grammar.visitor.relation;
 
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
+import com.terra.pjatk.aug.grammar.visitor.expression.StringExpressionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,7 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 class StringRelationExpressionVisitorTest {
@@ -55,7 +57,8 @@ class StringRelationExpressionVisitorTest {
     public void should_return_correct_value_for_equality(String left, String right, boolean expectedResult) {
 
         // Arrange
-        when(stringExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(stringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left)))).thenReturn(left);
+        when(stringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right)))).thenReturn(right);
 
         // Act
         var result = visitStringRelation(left + "==" + right);
@@ -79,7 +82,8 @@ class StringRelationExpressionVisitorTest {
     public void should_return_correct_value_for_inequality(String left, String right, boolean expectedResult) {
 
         // Arrange
-        when(stringExpressionVisitor.visit(any())).thenReturn(left, right);
+        when(stringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(left)))).thenReturn(left);
+        when(stringExpressionVisitor.visit(argThat(new ParseTreeArgumentMatcher(right)))).thenReturn(right);
 
         // Act
         var result = visitStringRelation(left + "!=" + right);

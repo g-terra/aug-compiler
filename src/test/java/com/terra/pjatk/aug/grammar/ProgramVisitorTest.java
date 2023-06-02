@@ -7,10 +7,6 @@ import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
-import com.terra.pjatk.aug.grammar.visitor.AssignStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.NumberExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.OutputExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.StringExpressionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,18 +32,14 @@ public class ProgramVisitorTest {
         Debugger debugger = new Debugger(false);
         MemoryManager memoryManager = new AugMemoryManager();
 
-        var provider = AugGrammarContextProvider.builder()
-                .memoryManager(memoryManager)
-                .outputPrinter(outputPrinter)
-                .debugger(debugger)
-                .inputReader(inputReader)
-                .build();
+        AugGrammarContextProvider provider = AugGrammarContextProvider.defaultSetup(false);
 
-        provider.registerVisitor(ExpressionType.NUMBER, new NumberExpressionVisitor(provider));
-        provider.registerVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
-        provider.registerVisitor(ExpressionType.OUTPUT, new OutputExpressionVisitor(provider));
-        provider.registerVisitor(ExpressionType.ASSIGN, new AssignStatementVisitor(provider));
-        visitor = new ProgramVisitor(provider);
+        provider.setOutputPrinter(outputPrinter);
+        provider.setInputReader(inputReader);
+        provider.setDebugger(debugger);
+        provider.setMemoryManager(memoryManager);
+
+        visitor = (ProgramVisitor) provider.getVisitor(ExpressionType.PROGRAM);
 
     }
 
@@ -82,6 +74,31 @@ public class ProgramVisitorTest {
         assertThat(outputPrinter.getMessages()).size().isEqualTo(1);
         assertThat(outputPrinter.getMessages().get(0)).isEqualTo("hello world!");
 
+    }
+
+
+    @Test
+    public void should_get_correct_print_with_if_statement_else() {
+        var program = """
+                x:=1;
+                y:=2;
+                if x<y then print("x is less than y") else print("x is greater than y");
+                """;
+        runProgram(program);
+
+        assertThat(outputPrinter.getMessages()).size().isEqualTo(1);
+        assertThat(outputPrinter.getMessages().get(0)).isEqualTo("x is less than y");
+    }
+
+    @Test
+    public void should_get_correct_print_with_if_statement() {
+        var program = """
+                if true then print("passed");
+                """;
+        runProgram(program);
+
+        assertThat(outputPrinter.getMessages()).size().isEqualTo(1);
+        assertThat(outputPrinter.getMessages().get(0)).isEqualTo("passed");
     }
 
     private void runProgram(String program) {

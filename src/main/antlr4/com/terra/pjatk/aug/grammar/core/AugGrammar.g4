@@ -29,11 +29,11 @@ grammar AugGrammar;
 
 program : instr ;
 
-instr :  simple_instr ';' instr
-      |  /* empty */ ;
+instr :  instr simple_instr ';' |  /* empty */ ;
 
 simple_instr : assign_stat
-    | output_stat;
+    | output_stat
+    | if_stat ;
 
 
 assign_stat
@@ -47,6 +47,10 @@ printable_expr :   printable_undef | printable_num_expr | printable_str_expr ;
 printable_undef : { isUndefined(_input.LT(1).getText()) }? IDENT ;
 printable_num_expr : { isNum(_input.LT(1).getText()) }? num_expr ;
 printable_str_expr : { isStr(_input.LT(1).getText()) }? str_expr ;
+
+if_stat :  if_then_stat | if_then_else_stat ;
+if_then_stat : 'if' bool_expr 'then' simple_instr ;
+if_then_else_stat : 'if' bool_expr 'then' simple_instr 'else' simple_instr ;
 
 
 num_expr : num_expr '+' t_num_expr
@@ -82,7 +86,7 @@ read_str : 'readstr' ;
 concatenate : 'concatenate' '(' str_expr ',' str_expr ')' ;
 substring : 'substring' '(' str_expr ',' num_expr ',' num_expr ')' ;
 
-bool_expr :bool_expr 'or' t_bool_expr | t_bool_expr ;
+bool_expr : bool_expr 'or' t_bool_expr | t_bool_expr ;
 t_bool_expr : t_bool_expr 'and' f_bool_expr | f_bool_expr;
 f_bool_expr : true
     | false
