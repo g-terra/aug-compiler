@@ -59,7 +59,7 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
             case "IdentContext" -> visitIdent(ctx.ident());
             case "Read_intContext" -> visitRead_int(ctx.read_int());
             case "NegateContext" -> visitNegate(ctx.negate());
-            case "ParenContext" -> visitParen(ctx.paren());
+            case "Paren_numContext" -> visitParen_num(ctx.paren_num());
             case "LengthContext" -> visitLength(ctx.length());
             case "PositionContext" -> visitPosition(ctx.position());
             default -> throw new RuntimeException(
@@ -79,7 +79,7 @@ public class NumberExpressionVisitor extends AugGrammarBaseVisitor<Integer> {
     }
 
     @Override
-    public Integer visitParen(ParenContext ctx) {
+    public Integer visitParen_num(Paren_numContext ctx) {
         return visit(ctx.num_expr());
     }
 

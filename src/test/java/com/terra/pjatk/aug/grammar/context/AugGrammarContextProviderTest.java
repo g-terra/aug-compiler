@@ -32,6 +32,7 @@ class AugGrammarContextProviderTest {
         assertThat(provider.getVisitor(ExpressionType.ASSIGN)).isInstanceOf(AssignStatementVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.NUMBER_RELATION)).isInstanceOf(NumberRelationExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.STRING_RELATION)).isInstanceOf(StringRelationExpressionVisitor.class);
+        assertThat(provider.getVisitor(ExpressionType.BOOL)).isInstanceOf(BoolExpressionVisitor.class);
 
 
         assertThat(provider.getDebugger()).isNotNull();

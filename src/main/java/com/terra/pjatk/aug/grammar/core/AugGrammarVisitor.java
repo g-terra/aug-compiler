@@ -89,11 +89,11 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNegate(AugGrammarParser.NegateContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AugGrammarParser#paren}.
+	 * Visit a parse tree produced by {@link AugGrammarParser#paren_num}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParen(AugGrammarParser.ParenContext ctx);
+	T visitParen_num(AugGrammarParser.Paren_numContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#read_int}.
 	 * @param ctx the parse tree
@@ -136,6 +136,48 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubstring(AugGrammarParser.SubstringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#bool_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBool_expr(AugGrammarParser.Bool_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#t_bool_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitT_bool_expr(AugGrammarParser.T_bool_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#f_bool_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitF_bool_expr(AugGrammarParser.F_bool_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#true}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrue(AugGrammarParser.TrueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#false}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFalse(AugGrammarParser.FalseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#sub_bool_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSub_bool_expr(AugGrammarParser.Sub_bool_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#not_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot_expr(AugGrammarParser.Not_exprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#num_rel_expr}.
 	 * @param ctx the parse tree

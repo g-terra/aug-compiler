@@ -66,6 +66,7 @@ public class AugGrammarContextProvider implements ContextProvider {
         provider.registerVisitor(ExpressionType.ASSIGN, new AssignStatementVisitor(provider));
         provider.registerVisitor(ExpressionType.NUMBER_RELATION, new NumberRelationExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.STRING_RELATION, new StringRelationExpressionVisitor(provider));
+        provider.registerVisitor(ExpressionType.BOOL, new BoolExpressionVisitor(provider));
 
         return provider;
 

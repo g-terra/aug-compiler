@@ -54,12 +54,12 @@ f_num_expr : num
     | ident
     | read_int
     | negate
-    | paren
+    | paren_num
     | length
     | position ;
 
 negate : '-' num_expr ;
-paren : '(' num_expr ')' ;
+paren_num : '(' num_expr ')' ;
 read_int : 'readint' ;
 length : 'length' '(' str_expr ')' ;
 position : 'position' '(' str_expr ',' str_expr ')' ;
@@ -73,6 +73,20 @@ str_expr : string
 read_str : 'readstr' ;
 concatenate : 'concatenate' '(' str_expr ',' str_expr ')' ;
 substring : 'substring' '(' str_expr ',' num_expr ',' num_expr ')' ;
+
+bool_expr :bool_expr 'or' t_bool_expr | t_bool_expr ;
+t_bool_expr : t_bool_expr 'and' f_bool_expr | f_bool_expr;
+f_bool_expr : true
+    | false
+    | sub_bool_expr
+    | not_expr
+    | num_rel_expr
+    | str_rel_expr ;
+
+true : 'true' ;
+false : 'false' ;
+sub_bool_expr : '(' bool_expr ')' ;
+not_expr : 'not' bool_expr ;
 
 num_rel_expr : num_expr num_rel num_expr ;
 num_rel: num_eq_rel | num_lt_rel | num_le_rel | num_gt_rel | num_ge_rel | num_neq_rel ;

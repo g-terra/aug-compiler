@@ -79,8 +79,8 @@ class NumberExpressionVisitorTest {
                 Arguments.of("4*(2+2)", 16),
                 Arguments.of("4*(2+2)*(2+2)", 64),
                 Arguments.of("4*(2+2)/2", 8),
-                Arguments.of("5*(10+2)/(5+1)", 10)
-
+                Arguments.of("5*(10+2)/(5+1)", 10),
+                Arguments.of("1+2*3", 7)
         );
     }
 
