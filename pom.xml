@@ -101,6 +101,7 @@
     </dependencies>
 
     <build>
+        <finalName>aug</finalName>
         <plugins>
             <plugin>
                 <groupId>org.antlr</groupId>
@@ -160,6 +161,8 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <finalName>${project.artifactId}</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
             </plugin>
 

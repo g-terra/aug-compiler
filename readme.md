@@ -2,6 +2,8 @@
 
 AUG Compiler is a Java-based program that uses ANTLR4 for its grammar. The compiler provides functionality to parse and handle certain grammar expressions.
 
+
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
@@ -23,13 +25,13 @@ To install AUG Compiler, follow these steps:
    ```
 3. Compile and package the project:
    ```bash
-   mvn clean package
+    mvn clean compile assembly:single
    ```
 
-Now you can run the program using the following command:
-```bash
-java -cp target/aug-compiler-1.0-SNAPSHOT.jar com.terra.pjatk.aug.Main [options]
-```
+4. Now you can run the program using the following command:
+    ```bash
+    java -jar target/aug-compiler.jar [options]
+    ```
 
 The options are:
 
