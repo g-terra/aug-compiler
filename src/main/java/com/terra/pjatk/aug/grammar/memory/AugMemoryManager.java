@@ -39,4 +39,24 @@ public class AugMemoryManager implements MemoryManager {
         return Optional.ofNullable(types.get(name));
     }
 
+    @Override
+    public void remove(String variable) {
+        memory.remove(variable);
+        types.remove(variable);
+    }
+
+    @Override
+    public void update(String name, Object value) {
+
+        if (types.get(name) == DataType.NUMBER && value instanceof Integer) {
+            memory.put(name, value);
+        } else if (types.get(name) == DataType.STRING && value instanceof String) {
+            memory.put(name, value);
+        } else {
+            throw new RuntimeException("Type mismatch");
+        }
+
+    }
+
+
 }

@@ -34,7 +34,8 @@ instr :  instr simple_instr ';' |  /* empty */ ;
 simple_instr : assign_stat
     | output_stat
     | if_stat
-    | instr_block ;
+    | instr_block
+    | for_stat ;
 
 assign_stat
     : IDENT ':=' ident    { setType($IDENT.text,  getType($ident.text)); }
@@ -54,6 +55,8 @@ if_then_else_stat : 'if' bool_expr 'then' simple_instr 'else' simple_instr ;
 
 
 instr_block : 'begin' instr 'end' ;
+
+for_stat: 'for' assign_stat 'to' num_expr 'do' simple_instr ;
 
 
 num_expr : num_expr '+' t_num_expr

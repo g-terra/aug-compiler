@@ -20,10 +20,11 @@ public class InstructionBlockStatementVisitor extends AugGrammarBaseVisitor<Obje
 
         contextProvider.getDebugger().log("beginning of instruction block statement: {}" , ctx.getText());
 
-        Object result =contextProvider.getVisitor(ExpressionType.PROGRAM).visit(ctx.instr());
+        Object result = contextProvider.getVisitor(ExpressionType.PROGRAM).visit(ctx.instr());
 
         contextProvider.getDebugger().log("End of instruction block statement: {}" , ctx.getText());
 
-        return  result;
+        return result;
     }
+
 }

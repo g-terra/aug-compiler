@@ -44,4 +44,9 @@ public class ProgramVisitor extends AugGrammarBaseVisitor<Object> {
         return contextProvider.getVisitor(ExpressionType.INSTR_BLOCK).visit(ctx);
     }
 
+    @Override
+    public Object visitFor_stat(For_statContext ctx) {
+        return contextProvider.getVisitor(ExpressionType.FOR_LOOP_STATMENT).visit(ctx);
+    }
+
 }

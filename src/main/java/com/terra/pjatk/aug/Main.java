@@ -19,7 +19,7 @@ public class Main {
     public static final Map<String, Object> params = new java.util.HashMap<>();
 
     static {
-        params.put("debug", true);
+        params.put("debug", false);
         params.put("prog", "prog1.txt");
     }
 

@@ -16,8 +16,6 @@ import static org.mockito.Mockito.*;
 
 class IfStatementVisitorTest {
 
-    //setup provider
-
     IfStatementVisitor ifStatementVisitor;
 
     BoolExpressionVisitor boolExpressionVisitor;

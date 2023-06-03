@@ -10,10 +10,7 @@ import com.terra.pjatk.aug.grammar.visitor.expression.NumberExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.relation.NumberRelationExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.expression.StringExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.relation.StringRelationExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.AssignStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.IfStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.InstructionBlockStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.OutputStatementVisitor;
+import com.terra.pjatk.aug.grammar.visitor.statement.*;
 import com.terra.pjatk.aug.utils.console.printer.ConsolePrinter;
 import com.terra.pjatk.aug.utils.console.printer.OutputPrinter;
 import com.terra.pjatk.aug.utils.console.reader.ConsoleReader;
@@ -83,6 +80,7 @@ public class AugGrammarContextProvider implements ContextProvider {
         provider.registerVisitor(ExpressionType.BOOL, new BoolExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.IF_STATEMENT, new IfStatementVisitor(provider));
         provider.registerVisitor(ExpressionType.INSTR_BLOCK, new InstructionBlockStatementVisitor(provider));
+        provider.registerVisitor(ExpressionType.FOR_LOOP_STATMENT, new ForLoopStatementVisitor(provider));
 
         return provider;
 

@@ -1,5 +1,6 @@
 package com.terra.pjatk.aug.grammar.visitor.statement;
 
+import com.terra.pjatk.aug.domain.DataType;
 import com.terra.pjatk.aug.grammar.core.AugGrammarBaseVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarParser;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
@@ -26,6 +27,30 @@ public class OutputStatementVisitor extends AugGrammarBaseVisitor<Object> {
     public Object visitPrintable_expr(AugGrammarParser.Printable_exprContext ctx) {
 
         if (Objects.nonNull(ctx.printable_undef())) {
+
+            //get identifier
+            String variableName = ctx.printable_undef().IDENT().getText();
+
+            //check if variable is defined in memory
+            if (contextProvider.getMemoryManager().getType(variableName).isPresent()) {
+
+                DataType type = contextProvider.getMemoryManager().getType(variableName).get();
+
+                //check if variable is defined as number
+                if (type == DataType.NUMBER) {
+                    return visitPrintable_num_expr((AugGrammarParser.Printable_num_exprContext) ctx.getRuleContext());
+                }
+
+                //check if variable is defined as string
+
+                if (type == DataType.STRING) {
+                    return visitPrintable_str_expr((AugGrammarParser.Printable_str_exprContext) ctx.getRuleContext());
+                }
+
+            }
+
+
+
             return visitPrintable_undef(ctx.printable_undef());
         } else if (Objects.nonNull(ctx.printable_num_expr())) {
             return visitPrintable_num_expr(ctx.printable_num_expr());

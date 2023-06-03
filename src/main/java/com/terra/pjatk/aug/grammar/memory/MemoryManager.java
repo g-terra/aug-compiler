@@ -14,4 +14,8 @@ public interface MemoryManager {
     Object get(String name);
 
     Optional<DataType> getType(String name);
+
+    void remove(String variable);
+
+    void update(String name, Object value);
 }

@@ -5,10 +5,7 @@ import com.terra.pjatk.aug.grammar.visitor.expression.NumberExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.relation.NumberRelationExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.expression.StringExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.relation.StringRelationExpressionVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.AssignStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.IfStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.InstructionBlockStatementVisitor;
-import com.terra.pjatk.aug.grammar.visitor.statement.OutputStatementVisitor;
+import com.terra.pjatk.aug.grammar.visitor.statement.*;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,6 +40,7 @@ class AugGrammarContextProviderTest {
         assertThat(provider.getVisitor(ExpressionType.BOOL)).isInstanceOf(BoolExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.IF_STATEMENT)).isInstanceOf(IfStatementVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.INSTR_BLOCK)).isInstanceOf(InstructionBlockStatementVisitor.class);
+        assertThat(provider.getVisitor(ExpressionType.FOR_LOOP_STATMENT)).isInstanceOf(ForLoopStatementVisitor.class);
 
 
         assertThat(provider.getDebugger()).isNotNull();

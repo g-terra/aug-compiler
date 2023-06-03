@@ -89,6 +89,12 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstr_block(AugGrammarParser.Instr_blockContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#for_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_stat(AugGrammarParser.For_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#num_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

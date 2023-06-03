@@ -1,5 +1,8 @@
-begin
-print("block_instr_1");
-print("block_instr_2");
-end;
-print("not_block_instr_1");
+a:=10;
+for i:=1 to 10 do
+    for j:=1 to 10 do
+        begin
+           print("=========");
+           print(i);
+           print(j);
+        end;
