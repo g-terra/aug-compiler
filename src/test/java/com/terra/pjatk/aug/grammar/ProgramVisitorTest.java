@@ -5,6 +5,7 @@ import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
+import com.terra.pjatk.aug.grammar.utils.InstructionArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class ProgramVisitorTest {
@@ -38,6 +39,8 @@ public class ProgramVisitorTest {
         provider.setInputReader(inputReader);
         provider.setDebugger(debugger);
         provider.setMemoryManager(memoryManager);
+
+        provider.registerVisitor(ExpressionType.PROGRAM, spy(new ProgramVisitor(provider)));
 
         visitor = (ProgramVisitor) provider.getVisitor(ExpressionType.PROGRAM);
 
@@ -99,6 +102,20 @@ public class ProgramVisitorTest {
 
         assertThat(outputPrinter.getMessages()).size().isEqualTo(1);
         assertThat(outputPrinter.getMessages().get(0)).isEqualTo("passed");
+    }
+
+    //should verify that block statement is separately from other statements
+    @Test
+    public void should_get_correct_print_with_if_statement_with_block() {
+        // Arrange
+        var program = "begin print(\"hello\"); print(\"world\"); end; print(\"outside\");";
+
+        // Act
+        runProgram(program);
+
+        // Assert
+        verify(visitor).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"hello\");print(\"world\");")));
+        verify(visitor).visitSimple_instr(argThat(new InstructionArgumentMatcher<>("print(\"outside\")")));
     }
 
     private void runProgram(String program) {

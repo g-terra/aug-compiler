@@ -13,6 +13,11 @@ public class ParseTreeArgumentMatcher implements ArgumentMatcher<ParseTree> {
 
     @Override
     public boolean matches(ParseTree argument) {
-        return argument != null && text.equals(argument.getText());
+        if (argument == null) {
+            return false;
+        }
+        var argumentText = argument.getText();
+        return text.equals(argumentText);
     }
+
 }

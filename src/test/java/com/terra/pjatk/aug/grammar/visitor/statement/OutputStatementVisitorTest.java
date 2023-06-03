@@ -1,5 +1,6 @@
 package com.terra.pjatk.aug.grammar.visitor.statement;
 
+import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
@@ -40,6 +41,7 @@ class OutputStatementVisitorTest {
 
         var provider = AugGrammarContextProvider.builder()
                 .outputPrinter(outputPrinter)
+                .debugger(mock(Debugger.class))
                 .memoryManager(mock(MemoryManager.class))
                 .inputReader(mock(InputReader.class))
                 .build();

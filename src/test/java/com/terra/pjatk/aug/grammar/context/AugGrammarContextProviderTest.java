@@ -7,6 +7,7 @@ import com.terra.pjatk.aug.grammar.visitor.expression.StringExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.relation.StringRelationExpressionVisitor;
 import com.terra.pjatk.aug.grammar.visitor.statement.AssignStatementVisitor;
 import com.terra.pjatk.aug.grammar.visitor.statement.IfStatementVisitor;
+import com.terra.pjatk.aug.grammar.visitor.statement.InstructionBlockStatementVisitor;
 import com.terra.pjatk.aug.grammar.visitor.statement.OutputStatementVisitor;
 import org.junit.jupiter.api.Test;
 
@@ -41,6 +42,7 @@ class AugGrammarContextProviderTest {
         assertThat(provider.getVisitor(ExpressionType.STRING_RELATION)).isInstanceOf(StringRelationExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.BOOL)).isInstanceOf(BoolExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.IF_STATEMENT)).isInstanceOf(IfStatementVisitor.class);
+        assertThat(provider.getVisitor(ExpressionType.INSTR_BLOCK)).isInstanceOf(InstructionBlockStatementVisitor.class);
 
 
         assertThat(provider.getDebugger()).isNotNull();

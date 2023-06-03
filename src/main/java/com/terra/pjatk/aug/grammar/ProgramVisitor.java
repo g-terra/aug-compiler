@@ -19,6 +19,12 @@ public class ProgramVisitor extends AugGrammarBaseVisitor<Object> {
     }
 
     @Override
+    public Object visitProgram(ProgramContext ctx) {
+        contextProvider.getDebugger().log("Starting interpretation of program");
+        return super.visitProgram(ctx);
+    }
+
+    @Override
     public Object visitAssign_stat(Assign_statContext ctx) {
         return contextProvider.getVisitor(ExpressionType.ASSIGN).visit(ctx);
     }
@@ -32,4 +38,10 @@ public class ProgramVisitor extends AugGrammarBaseVisitor<Object> {
     public Object visitIf_stat(If_statContext ctx) {
         return contextProvider.getVisitor(ExpressionType.IF_STATEMENT).visit(ctx);
     }
+
+    @Override
+    public Object visitInstr_block(Instr_blockContext ctx) {
+        return contextProvider.getVisitor(ExpressionType.INSTR_BLOCK).visit(ctx);
+    }
+
 }

@@ -102,6 +102,13 @@ public class AugGrammarBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitInstr_block(AugGrammarParser.Instr_blockContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitNum_expr(AugGrammarParser.Num_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

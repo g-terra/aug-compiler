@@ -14,12 +14,6 @@ public class StringExpressionVisitor extends AugGrammarBaseVisitor<String> {
     private final ContextProvider contextProvider;
 
     @Override
-    public String visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
-        contextProvider.getDebugger().log("Visiting printable expression as str_expr. Expression: {}", ctx.str_expr().getText());
-        return visitStr_expr(ctx.str_expr());
-    }
-
-    @Override
     public String visitRead_str(AugGrammarParser.Read_strContext ctx) {
         return contextProvider.getInputReader().readString();
     }

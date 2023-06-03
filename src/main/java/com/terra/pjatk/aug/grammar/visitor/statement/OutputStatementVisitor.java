@@ -16,12 +16,15 @@ public class OutputStatementVisitor extends AugGrammarBaseVisitor<Object> {
 
     @Override
     public Object visitOutput_stat(AugGrammarParser.Output_statContext ctx) {
+        contextProvider.getDebugger().log("Interpreting output expression {}", ctx.getText());
+
         contextProvider.getOutputPrinter().print(String.valueOf(visitPrintable_expr(ctx.printable_expr())));
         return null;
     }
 
     @Override
     public Object visitPrintable_expr(AugGrammarParser.Printable_exprContext ctx) {
+
         if (Objects.nonNull(ctx.printable_undef())) {
             return visitPrintable_undef(ctx.printable_undef());
         } else if (Objects.nonNull(ctx.printable_num_expr())) {
@@ -34,18 +37,20 @@ public class OutputStatementVisitor extends AugGrammarBaseVisitor<Object> {
 
     @Override
     public Object visitPrintable_undef(AugGrammarParser.Printable_undefContext ctx) {
+        contextProvider.getDebugger().log("Interpreting printable as an undefined variable {}", ctx.getText());
         throw new RuntimeException("Undefined variable: " + ctx.IDENT().getText());
     }
 
     @Override
     public Integer visitPrintable_num_expr(AugGrammarParser.Printable_num_exprContext ctx) {
+        contextProvider.getDebugger().log("Interpreting printable as a number expression {}", ctx.getText());
         return (Integer) contextProvider.getVisitor(ExpressionType.NUMBER).visit(ctx.num_expr());
     }
 
     @Override
     public String visitPrintable_str_expr(AugGrammarParser.Printable_str_exprContext ctx) {
+        contextProvider.getDebugger().log("Interpreting printable as string a expression {}", ctx.getText());
         return (String) contextProvider.getVisitor(ExpressionType.STRING).visit(ctx.str_expr());
     }
-
 
 }

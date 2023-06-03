@@ -8,5 +8,5 @@ public enum ExpressionType {
     STRING_RELATION,
     BOOL,
     IF_STATEMENT,
-    PROGRAM, OUTPUT
+    PROGRAM, INSTR_BLOCK, OUTPUT
 }

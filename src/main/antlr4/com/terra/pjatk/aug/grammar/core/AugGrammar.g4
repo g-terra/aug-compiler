@@ -33,8 +33,8 @@ instr :  instr simple_instr ';' |  /* empty */ ;
 
 simple_instr : assign_stat
     | output_stat
-    | if_stat ;
-
+    | if_stat
+    | instr_block ;
 
 assign_stat
     : IDENT ':=' ident    { setType($IDENT.text,  getType($ident.text)); }
@@ -51,6 +51,9 @@ printable_str_expr : { isStr(_input.LT(1).getText()) }? str_expr ;
 if_stat :  if_then_stat | if_then_else_stat ;
 if_then_stat : 'if' bool_expr 'then' simple_instr ;
 if_then_else_stat : 'if' bool_expr 'then' simple_instr 'else' simple_instr ;
+
+
+instr_block : 'begin' instr 'end' ;
 
 
 num_expr : num_expr '+' t_num_expr
