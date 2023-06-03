@@ -1,6 +1,6 @@
 package com.terra.pjatk.aug.grammar.context;
 
-import com.terra.pjatk.aug.grammar.ProgramVisitor;
+import com.terra.pjatk.aug.grammar.visitor.InstructionVisitor;
 import com.terra.pjatk.aug.grammar.core.AugGrammarVisitor;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
@@ -70,7 +70,7 @@ public class AugGrammarContextProvider implements ContextProvider {
 
 
 
-        provider.registerVisitor(ExpressionType.PROGRAM, new ProgramVisitor(provider));
+        provider.registerVisitor(ExpressionType.INSTRUCTION, new InstructionVisitor(provider));
         provider.registerVisitor(ExpressionType.NUMBER, new NumberExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.STRING, new StringExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.OUTPUT, new OutputStatementVisitor(provider));
@@ -79,8 +79,8 @@ public class AugGrammarContextProvider implements ContextProvider {
         provider.registerVisitor(ExpressionType.STRING_RELATION, new StringRelationExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.BOOL, new BoolExpressionVisitor(provider));
         provider.registerVisitor(ExpressionType.IF_STATEMENT, new IfStatementVisitor(provider));
-        provider.registerVisitor(ExpressionType.INSTR_BLOCK, new InstructionBlockStatementVisitor(provider));
-        provider.registerVisitor(ExpressionType.FOR_LOOP_STATMENT, new ForLoopStatementVisitor(provider));
+        provider.registerVisitor(ExpressionType.INSTRUCTION_BLOCK, new InstructionBlockStatementVisitor(provider));
+        provider.registerVisitor(ExpressionType.FOR_LOOP_STATEMENT, new ForLoopStatementVisitor(provider));
 
         return provider;
 

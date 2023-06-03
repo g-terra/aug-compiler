@@ -1,6 +1,6 @@
 package com.terra.pjatk.aug.grammar.visitor.statement;
 
-import com.terra.pjatk.aug.grammar.ProgramVisitor;
+import com.terra.pjatk.aug.grammar.visitor.InstructionVisitor;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 class InstructionBlockStatementVisitorTest {
 
-    ProgramVisitor programVisitor;
+    InstructionVisitor instructionVisitor;
 
     InstructionBlockStatementVisitor instructionBlockStatementVisitor;
     @BeforeEach
@@ -27,9 +27,9 @@ class InstructionBlockStatementVisitorTest {
                 .debugger(mock(Debugger.class))
                 .build();
 
-        programVisitor = mock(ProgramVisitor.class);
+        instructionVisitor = mock(InstructionVisitor.class);
 
-        provider.registerVisitor(ExpressionType.PROGRAM, programVisitor);
+        provider.registerVisitor(ExpressionType.INSTRUCTION, instructionVisitor);
 
         instructionBlockStatementVisitor = new InstructionBlockStatementVisitor(provider);
     }
@@ -44,7 +44,7 @@ class InstructionBlockStatementVisitorTest {
         visitInstructionBlockStatement(statement);
 
         // Assert
-        verify(programVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\");print(\"world\");")));
+        verify(instructionVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\");print(\"world\");")));
 
     }
 

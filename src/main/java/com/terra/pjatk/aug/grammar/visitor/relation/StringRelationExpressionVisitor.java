@@ -12,7 +12,6 @@ public class StringRelationExpressionVisitor extends AugGrammarBaseVisitor<Boole
 
     private static final String EQUAL = "==";
     private static final String NOT_EQUAL = "!=";
-
     private final ContextProvider provider;
 
     @Override
@@ -29,10 +28,12 @@ public class StringRelationExpressionVisitor extends AugGrammarBaseVisitor<Boole
     }
 
     private boolean evalEqual(String left, String right) {
+        provider.getDebugger().log("line {} - Interpreting string EQUAL expression: {} = {}", left, right);
         return left.equals(right);
     }
 
     private boolean evalNotEqual(String left, String right) {
+        provider.getDebugger().log("line {} - Interpreting string NOT EQUAL expression: {} <> {}", left, right);
         return !left.equals(right);
     }
 

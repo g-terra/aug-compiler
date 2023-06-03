@@ -2,6 +2,7 @@ package com.terra.pjatk.aug.grammar.visitor.relation;
 
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
+import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
@@ -15,6 +16,7 @@ import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class StringRelationExpressionVisitorTest {
@@ -34,6 +36,7 @@ class StringRelationExpressionVisitorTest {
         var provider = AugGrammarContextProvider.builder()
                 .memoryManager(memoryManager)
                 .inputReader(inputReader)
+                .debugger(mock(Debugger.class))
                 .build();
 
         provider.registerVisitor(ExpressionType.STRING, stringExpressionVisitor);

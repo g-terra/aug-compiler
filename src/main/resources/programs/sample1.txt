@@ -1,0 +1,10 @@
+print("-----------------------------------------------------");
+print("this is a program to print the sum of two numbers");
+print("-----------------------------------------------------");
+
+print("we are setting variable a to 10");
+a:= 10;
+print("we are setting variable b to 20");
+b:= 20;
+print("we will now print the sum of a and b.And the result is:");
+print(a + b);

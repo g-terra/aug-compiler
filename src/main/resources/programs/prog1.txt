@@ -1,8 +1,0 @@
-a:=10;
-for i:=1 to 10 do
-    for j:=1 to 10 do
-        begin
-           print("=========");
-           print(i);
-           print(j);
-        end;

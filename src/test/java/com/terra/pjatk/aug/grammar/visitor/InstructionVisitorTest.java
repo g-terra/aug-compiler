@@ -1,4 +1,4 @@
-package com.terra.pjatk.aug.grammar;
+package com.terra.pjatk.aug.grammar.visitor;
 
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
@@ -8,18 +8,20 @@ import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.InstructionArgumentMatcher;
 import com.terra.pjatk.aug.grammar.utils.ProgramParser;
 import com.terra.pjatk.aug.grammar.utils.TestOutputPrinter;
+import com.terra.pjatk.aug.grammar.visitor.InstructionVisitor;
 import com.terra.pjatk.aug.utils.console.reader.InputReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 
-public class ProgramVisitorTest {
+public class InstructionVisitorTest {
 
-    private ProgramVisitor visitor;
+    private InstructionVisitor visitor;
 
     private TestOutputPrinter outputPrinter;
 
@@ -40,9 +42,9 @@ public class ProgramVisitorTest {
         provider.setDebugger(debugger);
         provider.setMemoryManager(memoryManager);
 
-        provider.registerVisitor(ExpressionType.PROGRAM, spy(new ProgramVisitor(provider)));
+        provider.registerVisitor(ExpressionType.INSTRUCTION, spy(new InstructionVisitor(provider)));
 
-        visitor = (ProgramVisitor) provider.getVisitor(ExpressionType.PROGRAM);
+        visitor = (InstructionVisitor) provider.getVisitor(ExpressionType.INSTRUCTION);
 
     }
 
@@ -118,8 +120,45 @@ public class ProgramVisitorTest {
         verify(visitor).visitSimple_instr(argThat(new InstructionArgumentMatcher<>("print(\"outside\")")));
     }
 
-    private void runProgram(String program) {
-        visitor.visit(ProgramParser.parse(program).program());
+    //test break statement
+    @Test
+    public void should_stop_execution_with_break_statement() {
+        // Arrange
+        var program = "begin print(\"hello\"); break; print(\"world\"); end;";
+
+        // Act & Assert
+        assertThatThrownBy(() -> runProgram(program)).isInstanceOf(InstructionVisitor.BreakException.class);
+        verify(visitor).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"hello\");")));
+        verify(visitor, never()).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"world\");")));
+    }
+
+    @Test
+    public void should_stop_execution_with_continue_statement(){
+        // Arrange
+        var program = "begin print(\"hello\"); continue; print(\"world\"); end;";
+
+        // Act & Assert
+        assertThatThrownBy(() -> runProgram(program)).isInstanceOf(InstructionVisitor.ContinueException.class);
+        verify(visitor).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"hello\");")));
+        verify(visitor, never()).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"world\");")));
+    }
+
+    @Test
+    public void should_stop_execution_with_exit_statement(){
+        // Arrange
+        var program = "begin print(\"hello\"); exit; print(\"world\"); end;";
+
+        // Act & Assert
+        Object result = runProgram(program);
+        assertThat(result).isEqualTo("exited");
+        verify(visitor).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"hello\");")));
+        verify(visitor, never()).visitInstr(argThat(new InstructionArgumentMatcher<>("print(\"world\");")));
+    }
+
+
+
+    private Object runProgram(String program) {
+        return visitor.visit(ProgramParser.parse(program).program());
     }
 
 

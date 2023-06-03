@@ -1,0 +1,9 @@
+print("-----------------------------------------------------");
+print("this is a program to print if a number provided is odd or even");
+print("-----------------------------------------------------");
+print("enter a number");
+input:=readint;
+if input%2 = 0 then
+    print("the number is even")
+else
+    print("the number is odd");

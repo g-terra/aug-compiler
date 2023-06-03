@@ -1,6 +1,7 @@
 package com.terra.pjatk.aug.grammar.visitor.statement;
 
-import com.terra.pjatk.aug.grammar.ProgramVisitor;
+import com.terra.pjatk.aug.grammar.debuger.Debugger;
+import com.terra.pjatk.aug.grammar.visitor.InstructionVisitor;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
@@ -20,7 +21,7 @@ class IfStatementVisitorTest {
 
     BoolExpressionVisitor boolExpressionVisitor;
 
-    ProgramVisitor programVisitor;
+    InstructionVisitor instructionVisitor;
 
 
     @BeforeEach
@@ -29,12 +30,13 @@ class IfStatementVisitorTest {
         var provider = AugGrammarContextProvider.builder()
                 .memoryManager(mock(MemoryManager.class))
                 .inputReader(mock(InputReader.class))
+                .debugger(mock(Debugger.class))
                 .build();
 
-        programVisitor = mock(ProgramVisitor.class);
+        instructionVisitor = mock(InstructionVisitor.class);
         boolExpressionVisitor = mock(BoolExpressionVisitor.class);
 
-        provider.registerVisitor(ExpressionType.PROGRAM, programVisitor);
+        provider.registerVisitor(ExpressionType.INSTRUCTION, instructionVisitor);
         provider.registerVisitor(ExpressionType.BOOL, boolExpressionVisitor);
 
 
@@ -52,7 +54,7 @@ class IfStatementVisitorTest {
         visitIfStatement(statement);
 
         // Assert
-        verify(programVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
+        verify(instructionVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
 
     }
 
@@ -67,7 +69,7 @@ class IfStatementVisitorTest {
         visitIfStatement(statement);
 
         // Assert
-        verify(programVisitor, never()).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
+        verify(instructionVisitor, never()).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
 
     }
 
@@ -82,7 +84,7 @@ class IfStatementVisitorTest {
         visitIfStatement(statement);
 
         // Assert
-        verify(programVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
+        verify(instructionVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
 
     }
 
@@ -97,7 +99,7 @@ class IfStatementVisitorTest {
         visitIfStatement(statement);
 
         // Assert
-        verify(programVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"world\")")));
+        verify(instructionVisitor).visit(argThat(new ParseTreeArgumentMatcher("print(\"world\")")));
 
     }
 

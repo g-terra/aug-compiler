@@ -29,6 +29,24 @@ public interface AugGrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSimple_instr(AugGrammarParser.Simple_instrContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#break_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBreak_stat(AugGrammarParser.Break_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#continue_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContinue_stat(AugGrammarParser.Continue_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AugGrammarParser#exit_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExit_stat(AugGrammarParser.Exit_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AugGrammarParser#assign_stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

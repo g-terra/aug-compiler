@@ -1,0 +1,19 @@
+print("-----------------------------------------------------");
+print("this is a program to print the fibanatchi series");
+print("-----------------------------------------------------");
+print("we are setting variable a to 0");
+a:= 0;
+print("we are setting variable b to 1");
+b:= 1;
+print("we are setting variable c to 0");
+c:= 0;
+print("we will now print the fibanatchi series till 10.And the result is:");
+print(a);
+print(b);
+for i:= 0 to 10 do
+begin
+    c:= a + b;
+    print(c);
+    a:= b;
+    b:= c;
+end;

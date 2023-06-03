@@ -39,8 +39,8 @@ class AugGrammarContextProviderTest {
         assertThat(provider.getVisitor(ExpressionType.STRING_RELATION)).isInstanceOf(StringRelationExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.BOOL)).isInstanceOf(BoolExpressionVisitor.class);
         assertThat(provider.getVisitor(ExpressionType.IF_STATEMENT)).isInstanceOf(IfStatementVisitor.class);
-        assertThat(provider.getVisitor(ExpressionType.INSTR_BLOCK)).isInstanceOf(InstructionBlockStatementVisitor.class);
-        assertThat(provider.getVisitor(ExpressionType.FOR_LOOP_STATMENT)).isInstanceOf(ForLoopStatementVisitor.class);
+        assertThat(provider.getVisitor(ExpressionType.INSTRUCTION_BLOCK)).isInstanceOf(InstructionBlockStatementVisitor.class);
+        assertThat(provider.getVisitor(ExpressionType.FOR_LOOP_STATEMENT)).isInstanceOf(ForLoopStatementVisitor.class);
 
 
         assertThat(provider.getDebugger()).isNotNull();

@@ -21,8 +21,8 @@ public class NumberRelationExpressionVisitor extends AugGrammarBaseVisitor<Boole
     @Override
     public Boolean visitNum_rel_expr(AugGrammarParser.Num_rel_exprContext ctx) {
 
-        provider.getDebugger().log("Evaluating numerical relation expression {}", ctx.getText());
 
+        provider.getDebugger().log("line {} - Interpreting number relation expression: {}", ctx.getStart().getLine(), ctx.getText());
 
         Integer left = (Integer) provider.getVisitor(ExpressionType.NUMBER).visit(ctx.getChild(0));
         Integer right = (Integer) provider.getVisitor(ExpressionType.NUMBER).visit(ctx.getChild(2));
@@ -39,26 +39,32 @@ public class NumberRelationExpressionVisitor extends AugGrammarBaseVisitor<Boole
     }
 
     private boolean evalEqual(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical EQUAl expression: {} = {}", left, right);
         return left.equals(right);
     }
 
     private boolean evalNotEqual(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical NOT EQUAL expression: {} <> {}", left, right);
         return !left.equals(right);
     }
 
     private boolean evalGreaterThan(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical GREATER THAN expression: {} > {}", left, right);
         return left > right;
     }
 
     private boolean evalGreaterOrEqualThan(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical GREATER OR EQUAL THAN expression: {} >= {}", left, right);
         return left >= right;
     }
 
     private boolean evalLessThan(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical LESS THAN expression: {} < {}", left, right);
         return left < right;
     }
 
     private boolean evalLessOrEqualThan(Integer left, Integer right) {
+        provider.getDebugger().log("line {} - Interpreting numerical LESS OR EQUAL THAN expression: {} <= {}", left, right);
         return left <= right;
     }
 

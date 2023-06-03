@@ -20,7 +20,6 @@ public class Main {
 
     static {
         params.put("debug", false);
-        params.put("prog", "prog1.txt");
     }
 
     public static void main(String[] args) {
@@ -28,19 +27,13 @@ public class Main {
         handleArgs(args);
 
         try {
-            String input;
-            try (InputStream is = Main.class.getClassLoader().getResourceAsStream("programs/" + params.get("prog"))) {
-                if (is == null) {
-                    throw new IOException("Resource not found: " + params.get("prog"));
-                }
-                input = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            }
+            String input = loadProgram();
 
-            ParseTree tree = getParseTree(input);
+            ParseTree tree = parseProgramToTree(input);
 
             ContextProvider provider = AugGrammarContextProvider.defaultSetup((boolean) params.get("debug"));
 
-            provider.getVisitor(ExpressionType.PROGRAM).visit(tree);
+            provider.getVisitor(ExpressionType.INSTRUCTION).visit(tree);
 
         } catch (IOException e) {
             System.err.println("Failed to read file: " + params.get("prog"));
@@ -48,7 +41,31 @@ public class Main {
         }
     }
 
-    private static ParseTree getParseTree(String input) {
+    private static String loadProgram() throws IOException {
+        String input;
+        if (params.get("prog") == null) {
+            if (params.get("sample") != null)
+                input = getInputFromResources((int) params.get("sample"));
+            else
+                input = getInputFromResources(1);
+        } else {
+            input = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get((String) params.get("prog"))));
+        }
+        return input;
+    }
+
+    private static String getInputFromResources(int sampleNumber) throws IOException {
+        String input;
+        try (InputStream is = Main.class.getClassLoader().getResourceAsStream("programs/sample" + sampleNumber + ".txt")) {
+            if (is == null) {
+                throw new IOException("Resource not found: " + params.get("prog"));
+            }
+            input = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+        return input;
+    }
+
+    private static ParseTree parseProgramToTree(String input) {
         AugGrammarLexer lexer = new AugGrammarLexer(CharStreams.fromString(input));
         AugGrammarParser parser = new AugGrammarParser(new CommonTokenStream(lexer));
         return parser.program();
@@ -68,6 +85,16 @@ public class Main {
                 }
                 params.put("prog", parts[1]);
                 System.out.println("Using program file: " + parts[1]);
+            }
+
+            if (arg.startsWith("-sample=")) {
+                String[] parts = arg.split("=");
+                if (parts.length != 2) {
+                    System.err.println("Invalid argument: " + arg);
+                    System.exit(1);
+                }
+                params.put("sample", Integer.parseInt(parts[1]));
+                System.out.println("Using sample program: " + parts[1]);
             }
 
         }

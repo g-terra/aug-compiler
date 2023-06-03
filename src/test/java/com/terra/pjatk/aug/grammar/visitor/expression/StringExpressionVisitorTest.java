@@ -1,6 +1,7 @@
 package com.terra.pjatk.aug.grammar.visitor.expression;
 
 import com.terra.pjatk.aug.domain.DataType;
+import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
@@ -35,6 +36,7 @@ class StringExpressionVisitorTest {
         memoryManager = Mockito.mock(AugMemoryManager.class);
 
         var provider = AugGrammarContextProvider.builder()
+                .debugger(mock(Debugger.class))
                 .memoryManager(memoryManager)
                 .inputReader(inputReader)
                 .build();

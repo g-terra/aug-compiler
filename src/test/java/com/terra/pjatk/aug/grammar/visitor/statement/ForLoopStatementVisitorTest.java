@@ -1,7 +1,7 @@
 package com.terra.pjatk.aug.grammar.visitor.statement;
 
 import com.terra.pjatk.aug.domain.DataType;
-import com.terra.pjatk.aug.grammar.ProgramVisitor;
+import com.terra.pjatk.aug.grammar.visitor.InstructionVisitor;
 import com.terra.pjatk.aug.grammar.context.AugGrammarContextProvider;
 import com.terra.pjatk.aug.grammar.context.ExpressionType;
 import com.terra.pjatk.aug.grammar.debuger.Debugger;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 public class ForLoopStatementVisitorTest {
 
 
-    ProgramVisitor programVisitor;
+    InstructionVisitor instructionVisitor;
 
     NumberExpressionVisitor numberExpressionVisitor;
 
@@ -40,12 +40,12 @@ public class ForLoopStatementVisitorTest {
                 .debugger(mock(Debugger.class))
                 .build();
 
-        programVisitor = mock(ProgramVisitor.class);
+        instructionVisitor = mock(InstructionVisitor.class);
         numberExpressionVisitor = mock(NumberExpressionVisitor.class);
         assignStatementVisitor = mock(AssignStatementVisitor.class);
 
 
-        provider.registerVisitor(ExpressionType.PROGRAM, programVisitor);
+        provider.registerVisitor(ExpressionType.INSTRUCTION, instructionVisitor);
         provider.registerVisitor(ExpressionType.NUMBER, numberExpressionVisitor);
         provider.registerVisitor(ExpressionType.ASSIGN, assignStatementVisitor);
 
@@ -64,7 +64,7 @@ public class ForLoopStatementVisitorTest {
         visitForLoopStatement(statement);
 
         // Assert
-        verify(programVisitor, times(10)).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
+        verify(instructionVisitor, times(10)).visit(argThat(new ParseTreeArgumentMatcher("print(\"hello\")")));
     }
 
     private void visitForLoopStatement(String statement) {

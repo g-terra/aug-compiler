@@ -1,6 +1,7 @@
 package com.terra.pjatk.aug.grammar.visitor.expression;
 
 import com.terra.pjatk.aug.domain.DataType;
+import com.terra.pjatk.aug.grammar.debuger.Debugger;
 import com.terra.pjatk.aug.grammar.memory.AugMemoryManager;
 import com.terra.pjatk.aug.grammar.memory.MemoryManager;
 import com.terra.pjatk.aug.grammar.utils.ParseTreeArgumentMatcher;
@@ -40,6 +41,7 @@ class NumberExpressionVisitorTest {
         var provider = AugGrammarContextProvider.builder()
                 .memoryManager(memoryManager)
                 .inputReader(mockInputReader)
+                .debugger(mock(Debugger.class))
                 .build();
 
         provider.registerVisitor(ExpressionType.STRING, mockStringExpressionVisitor);
