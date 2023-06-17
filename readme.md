@@ -38,6 +38,6 @@ The options are:
 * `-debug`: If provided, the program will run in debug mode.
 * `-prog=[filename]`: The path to the program file you want to parse. For example: `-prog=./program.txt`
 * `-sample=[number]`: Number of the sample program to use. For example: `-sample=1`
-  * there are currently 3 sample programs available: `1`, `2`, and `3`
+  * there are currently 4 sample programs available: `1`, `2`, `3` , and `4` (default is `1`)
 
 If no program (`-prog`) or sample (`-sample`) is specified, the default sample program `programs/sample1.txt` will be used.

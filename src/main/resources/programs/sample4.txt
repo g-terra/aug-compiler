@@ -1,0 +1,26 @@
+print("-----------------------------------------------------");
+print("this is a program to revert a string");
+print("-----------------------------------------------------");
+
+print("enter a string:");
+input:= readstr;
+
+if length(input)=0 then
+   begin
+    print("the string is empty");
+    exit;
+   end;
+
+if length(input)=1 then
+   begin
+    print(concatenate("the reverted of a single char is the char itself:",input));
+    exit;
+   end;
+
+
+for i:=1 to length(input) do
+   rev:=concatenate(rev,substring(input,length(input)-i+1,1));
+
+print(concatenate("the reverted string is:",rev));
+
+
